@@ -14,6 +14,38 @@ const User = [
       },
     ],
   },
+
+  {
+    id: 23454,
+    first: "Chloe",
+    last: "Habelreeh",
+    gender: "Female",
+    houseHoldIds: [123, 321, 334],
+    userDoneChores: [
+      {
+        houseHoldId: 123,
+        choreId: 2341,
+        timeCompleted: "12:00:32",
+        dateCompleted: "12/30/2021",
+      },
+    ],
+  },
+
+  {
+    id: 23111,
+    first: "David",
+    last: "Spencer",
+    gender: "Male",
+    houseHoldIds: [123, 321, 334],
+    userDoneChores: [
+      {
+        houseHoldId: 123,
+        choreId: 2341,
+        timeCompleted: "12:00:32",
+        dateCompleted: "12/30/2021",
+      },
+    ],
+  },
 ];
 
 const HouseHold = [
