@@ -2,11 +2,13 @@ import { View, Text, FlatList } from "react-native";
 import React from "react";
 import styles from "./styles";
 import userData from "../../../assets/data/userData";
-import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import FamilyMemberProfiles from "../../components/FamilyMemberProfiles/FamilyMemberProfiles";
+import ChoreCard from "../../components/ChoreCard/ChoreCard";
 
 const USER = userData.User[0];
+const HOUSEHOLD = userData.HouseHold[0];
 
 const HomeScreen = () => {
   return (
@@ -20,7 +22,7 @@ const HomeScreen = () => {
             </Text>
           </View>
           <View style={styles.profileIconCircle}>
-            <FontAwesome5 name="user-alt" size={35} color={Colors.orange} />
+            <FontAwesome5 name="user-alt" size={35} color={Colors.darkGreen} />
           </View>
         </View>
         <View style={styles.introContainer}>
@@ -54,27 +56,34 @@ const HomeScreen = () => {
         </View>
         {/* Chores content container */}
         <View style={styles.choresContentContainer}>
-          <Text style={styles.familyMemberTitle}>Chores</Text>
-          <Text style={styles.familyMemberSubTitle}>
+          <Text style={[styles.familyMemberTitle, { marginLeft: 50 }]}>
+            Chores
+          </Text>
+          <Text style={[styles.familyMemberSubTitle, { marginLeft: 50 }]}>
             You can browse your family home chores,
           </Text>
-          <Text style={styles.familyMemberSubTitle}>
+          <Text style={[styles.familyMemberSubTitle, { marginLeft: 50 }]}>
             and create new chores in here.
           </Text>
+          <FlatList
+            contentOffset={[-50, 0]}
+            contentContainerStyle={{ paddingLeft: 50 }}
+            showsHorizontalScrollIndicator={false}
+            style={{ marginTop: 20 }}
+            horizontal={true}
+            data={HOUSEHOLD.availableChores}
+            renderItem={({ item }) => <ChoreCard choreInfo={item} />}
+          />
         </View>
-        <View style={styles.choresItemContainer}>
-          <View style={styles.choresIconContainer}>
-            <MaterialCommunityIcons
-              name="flower-tulip"
-              size={24}
-              color="black"
-            />
-          </View>
-          <Text>Water Plants</Text>
-          <View>
-            <Text>25</Text>
-            <Text>Points</Text>
-          </View>
+
+        <View style={styles.addChoreButtonContainer}>
+          <Text style={styles.addChoreText}>Add Chore</Text>
+          <MaterialIcons
+            style={{ marginLeft: "auto", marginRight: 20 }}
+            name="arrow-forward-ios"
+            size={24}
+            color="white"
+          />
         </View>
       </View>
     </View>
