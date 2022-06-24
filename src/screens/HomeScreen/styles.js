@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   introText: {
     fontSize: 24,
-    fontFamily: "poppins-bold",
+    fontFamily: "poppins-medium",
     color: Colors.textColor,
   },
   profileIconCircle: {
@@ -23,7 +23,7 @@ export default StyleSheet.create({
   },
   introSecondaryText: {
     fontSize: 16,
-    fontFamily: "poppins-medium",
+    fontFamily: "poppins",
     color: Colors.textColor,
   },
   introContainer: {
@@ -44,7 +44,7 @@ export default StyleSheet.create({
   },
   familyMemberTitle: {
     fontSize: 16,
-    fontFamily: "poppins-bold",
+    fontFamily: "poppins-medium",
     color: Colors.textColor,
     marginBottom: 3,
   },

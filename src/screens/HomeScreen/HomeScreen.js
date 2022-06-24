@@ -45,7 +45,7 @@ const HomeScreen = () => {
             }}
           >
             {userData.User.map((user) => (
-              <FamilyMemberProfiles userInfo={user} />
+              <FamilyMemberProfiles key={user.id} userInfo={user} />
             ))}
             <View style={{ marginRight: 15, paddingTop: 15 }}>
               <View style={styles.addFamilyMemberCircle}>

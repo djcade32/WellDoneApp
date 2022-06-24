@@ -12,6 +12,7 @@ import * as SplashScreen from "expo-splash-screen";
 import HomeScreen from "./src/screens/HomeScreen/HomeScreen";
 import Colors from "./src/constants/Colors";
 import BgImage from "./assets/images/bgImage.png";
+import FamilyMemberScreen from "./src/screens/FamilyMemberScreen/FamilyMemberScreen";
 
 // Loading fonts
 function fetchFonts() {
@@ -69,7 +70,8 @@ export default function App() {
       onLayout={onLayoutRootView}
     >
       <SafeAreaView>
-        <HomeScreen />
+        {/* <HomeScreen /> */}
+        <FamilyMemberScreen />
       </SafeAreaView>
       <StatusBar style="auto" />
     </ImageBackground>
