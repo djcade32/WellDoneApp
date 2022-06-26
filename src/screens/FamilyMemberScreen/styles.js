@@ -3,7 +3,7 @@ import Colors from "../../constants/Colors";
 
 export default StyleSheet.create({
   headerContainer: {
-    marginTop: 50,
+    marginTop: 30,
     flexDirection: "row",
     // borderWidth: 1,
     // borderColor: "red",
@@ -29,8 +29,11 @@ export default StyleSheet.create({
     height: "100%",
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    marginTop: 50,
+    marginTop: 70,
     paddingTop: 50,
+  },
+  calendar: {
+    marginBottom: 50,
   },
   calendarMonthText: {
     color: Colors.textColor,
@@ -59,5 +62,15 @@ export default StyleSheet.create({
     color: Colors.textColor,
     textAlign: "center",
     fontFamily: "poppins",
+  },
+  choresTitle: {
+    fontSize: 16,
+    fontFamily: "poppins-medium",
+    color: Colors.textColor,
+    marginBottom: 3,
+  },
+  choresSubTitle: {
+    fontFamily: "poppins",
+    color: Colors.darkGray,
   },
 });

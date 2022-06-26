@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import Colors from "../../constants/Colors";
 
 export default StyleSheet.create({
-  header: { marginTop: 50 },
+  header: { marginTop: 30 },
   greetingsContainer: {
     flexDirection: "row",
     alignItems: "center",

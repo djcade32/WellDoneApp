@@ -11,8 +11,8 @@ import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import HomeScreen from "./src/screens/HomeScreen/HomeScreen";
 import Colors from "./src/constants/Colors";
-import BgImage from "./assets/images/bgImage.png";
 import FamilyMemberScreen from "./src/screens/FamilyMemberScreen/FamilyMemberScreen";
+import AddChoreScreen from "./src/screens/AddChoreScreen/AddChoreScreen";
 
 // Loading fonts
 function fetchFonts() {
@@ -63,18 +63,12 @@ export default function App() {
   }
 
   return (
-    <ImageBackground
-      source={BgImage}
-      resizeMode="cover"
-      style={styles.container}
-      onLayout={onLayoutRootView}
-    >
-      <SafeAreaView>
-        {/* <HomeScreen /> */}
-        <FamilyMemberScreen />
-      </SafeAreaView>
+    <View onLayout={onLayoutRootView}>
+      {/* <HomeScreen />
+      <FamilyMemberScreen /> */}
+      <AddChoreScreen />
       <StatusBar style="auto" />
-    </ImageBackground>
+    </View>
   );
 }
 
