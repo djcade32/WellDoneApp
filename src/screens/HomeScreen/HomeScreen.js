@@ -81,7 +81,7 @@ const HomeScreen = () => {
               contentOffset={[-50, 0]}
               contentContainerStyle={{ paddingLeft: 50 }}
               showsHorizontalScrollIndicator={false}
-              style={{ marginTop: 20 }}
+              style={{ marginTop: 20, borderColor: "red", borderWidth: 1 }}
               horizontal={true}
               data={HOUSEHOLD.availableChores}
               renderItem={({ item }) => <ChoreCard choreInfo={item} />}
