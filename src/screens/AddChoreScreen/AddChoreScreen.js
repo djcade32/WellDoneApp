@@ -4,11 +4,12 @@ import {
   SafeAreaView,
   ImageBackground,
   TextInput,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Keyboard,
   Platform,
   KeyboardAvoidingView,
   FlatList,
+  Pressable,
 } from "react-native";
 import React from "react";
 import styles from "./styles";
@@ -25,6 +26,7 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import userData from "../../../assets/data/userData";
+import { useNavigation, StackActions } from "@react-navigation/native";
 
 const HOUSEHOLD = userData.HouseHold[0];
 const CHORESICONS = [
@@ -94,6 +96,10 @@ function getChoreIcon(chore) {
 }
 
 const AddChoreScreen = () => {
+  const navigation = useNavigation();
+  function createChoreHandler() {
+    navigation.dispatch(StackActions.replace("HomeScreen", "PUSH"));
+  }
   return (
     <ImageBackground
       style={{ height: "100%" }}
@@ -106,10 +112,20 @@ const AddChoreScreen = () => {
           style={styles.container}
         >
           <View style={styles.screenContainer}>
-            <View style={{ position: "absolute", left: 25 }}>
-              <Feather name="arrow-left" size={35} color={Colors.darkGreen} />
-            </View>
+            {/* The order of the Add Chore title and back button actually matters. This order allows
+          the back button to be pressable */}
             <Text style={styles.addChoreTitle}>Add chore</Text>
+            <Pressable
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{
+                position: "absolute",
+                left: 25,
+              }}
+            >
+              <Feather name="arrow-left" size={35} color={Colors.darkGreen} />
+            </Pressable>
             <View style={styles.contentContainer}>
               <View style={styles.inputContainer}>
                 <Text style={styles.inputTitle}>Chore</Text>
@@ -149,9 +165,19 @@ const AddChoreScreen = () => {
                 />
               </View>
 
-              <View style={styles.addChoreButtonContainer}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={createChoreHandler}
+                style={styles.addChoreButtonContainer}
+              >
                 <Text style={styles.addChoreText}>Create Chore</Text>
-              </View>
+                <MaterialIcons
+                  style={{ marginLeft: "auto", marginRight: 20 }}
+                  name="arrow-forward-ios"
+                  size={24}
+                  color="white"
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </KeyboardAvoidingView>

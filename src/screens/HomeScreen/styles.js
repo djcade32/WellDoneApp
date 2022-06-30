@@ -7,6 +7,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 25,
+    marginHorizontal: 25,
   },
   introText: {
     fontSize: 24,
@@ -19,7 +20,7 @@ export default StyleSheet.create({
     borderRadius: 50,
     overflow: "hidden",
     marginLeft: "auto",
-    marginRight: 50,
+    // marginRight: 50,
   },
   introSecondaryText: {
     fontSize: 16,

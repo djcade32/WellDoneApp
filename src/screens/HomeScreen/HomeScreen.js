@@ -4,38 +4,64 @@ import {
   FlatList,
   ImageBackground,
   SafeAreaView,
+  Pressable,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import styles from "./styles";
 import userData from "../../../assets/data/userData";
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import FamilyMemberProfiles from "../../components/FamilyMemberProfiles/FamilyMemberProfiles";
 import ChoreCard from "../../components/ChoreCard/ChoreCard";
 import BgImage from "../../../assets/images/homeScreenBgImage.png";
+import { useNavigation } from "@react-navigation/native";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   return (
     <ImageBackground source={BgImage} resizeMode="cover">
-      <SafeAreaView>
+      <SafeAreaView style={{ paddingBottom: 50 }}>
         {/* Header text container */}
         <View style={styles.header}>
           <View style={styles.greetingsContainer}>
+            <Pressable>
+              <MaterialCommunityIcons
+                name="folder-home"
+                size={40}
+                color={Colors.darkGreen}
+              />
+            </Pressable>
             <View style={{ width: "100%" }}>
-              <Text style={[styles.introText, { textAlign: "center" }]}>
+              <Text
+                style={[
+                  styles.introText,
+                  {
+                    textAlign: "right",
+                    maxWidth: "70%",
+                  },
+                ]}
+              >
                 Hi, {USER.first}
               </Text>
             </View>
-            <View style={styles.profileIconCircle}>
+            <Pressable
+              onPress={() => alert("Go to user profile")}
+              style={styles.profileIconCircle}
+            >
               <FontAwesome5
                 name="user-alt"
-                size={35}
+                size={40}
                 color={Colors.darkGreen}
               />
-            </View>
+            </Pressable>
           </View>
           <View style={styles.introContainer}>
             <Text style={styles.introSecondaryText}>Let's complete your</Text>
@@ -59,11 +85,15 @@ const HomeScreen = () => {
               {userData.User.map((user) => (
                 <FamilyMemberProfiles key={user.id} userInfo={user} />
               ))}
-              <View style={{ marginRight: 15, paddingTop: 15 }}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => alert("Add family member")}
+                style={{ marginRight: 15, paddingTop: 15 }}
+              >
                 <View style={styles.addFamilyMemberCircle}>
                   <Text style={styles.addFamilyMemberIcon}>+</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           {/* Chores content container */}
@@ -81,14 +111,18 @@ const HomeScreen = () => {
               contentOffset={[-50, 0]}
               contentContainerStyle={{ paddingLeft: 50 }}
               showsHorizontalScrollIndicator={false}
-              style={{ marginTop: 20, borderColor: "red", borderWidth: 1 }}
+              style={{ marginTop: 20 }}
               horizontal={true}
               data={HOUSEHOLD.availableChores}
               renderItem={({ item }) => <ChoreCard choreInfo={item} />}
             />
           </View>
 
-          <View style={styles.addChoreButtonContainer}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate("AddChoreScreen")}
+            style={styles.addChoreButtonContainer}
+          >
             <Text style={styles.addChoreText}>Add Chore</Text>
             <MaterialIcons
               style={{ marginLeft: "auto", marginRight: 20 }}
@@ -96,7 +130,7 @@ const HomeScreen = () => {
               size={24}
               color="white"
             />
-          </View>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     </ImageBackground>

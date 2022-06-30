@@ -4,6 +4,13 @@ const User = [
     first: "Norman",
     last: "Cade",
     gender: "Male",
+    houseHoldInvites: [
+      {
+        userId: 23454,
+        houseHoldId: 321,
+        status: "PENDING",
+      },
+    ],
     houseHoldIds: [123, 321, 334],
     userDoneChores: [
       {

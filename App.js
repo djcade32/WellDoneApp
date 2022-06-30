@@ -13,6 +13,8 @@ import HomeScreen from "./src/screens/HomeScreen/HomeScreen";
 import Colors from "./src/constants/Colors";
 import FamilyMemberScreen from "./src/screens/FamilyMemberScreen/FamilyMemberScreen";
 import AddChoreScreen from "./src/screens/AddChoreScreen/AddChoreScreen";
+import RootNavigator from "./src/navigation";
+import { NavigationContainer } from "@react-navigation/native";
 
 // Loading fonts
 function fetchFonts() {
@@ -63,12 +65,12 @@ export default function App() {
   }
 
   return (
-    <View onLayout={onLayoutRootView}>
-      {/* <HomeScreen />
-      <FamilyMemberScreen /> */}
-      <AddChoreScreen />
+    <NavigationContainer>
+      <RootNavigator />
+
+      {/* <HomeScreen /> */}
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
 

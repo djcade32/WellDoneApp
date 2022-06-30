@@ -3,6 +3,7 @@ import {
   Text,
   FlatList,
   ImageBackground,
+  Pressable,
   SafeAreaView,
 } from "react-native";
 import React from "react";
@@ -12,6 +13,7 @@ import userData from "../../../assets/data/userData";
 import ChoreCard from "../../components/ChoreCard/ChoreCard";
 import BgImage from "../../../assets/images/familyMemberScreenBgImage.png";
 import styles from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
@@ -34,6 +36,7 @@ const MONTHS = [
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const FamilyMemberScreen = () => {
+  const navigation = useNavigation();
   // Code to get day of the week
   const d = new Date("June 23, 2022");
   let day = d.getDay();
@@ -47,9 +50,9 @@ const FamilyMemberScreen = () => {
     <ImageBackground source={BgImage} resizeMode="cover">
       <SafeAreaView>
         <View style={styles.headerContainer}>
-          <View>
+          <Pressable onPress={() => navigation.goBack()}>
             <Feather name="arrow-left" size={35} color={Colors.darkGreen} />
-          </View>
+          </Pressable>
           <View>
             <Text style={styles.familyMemberName}>
               {USER.first + " " + USER.last}
