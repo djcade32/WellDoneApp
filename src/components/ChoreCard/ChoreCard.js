@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -7,7 +7,12 @@ import Colors from "../../constants/Colors";
 
 const ChoreCard = (props) => {
   return (
-    <View key={props.choreInfo.id} style={styles.choreItemContainer}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      onPress={() => alert("Completed chore")}
+      key={props.choreInfo.id}
+      style={styles.choreItemContainer}
+    >
       <View style={styles.choreIconContainer}>
         <MaterialCommunityIcons
           name="flower-tulip"
@@ -22,7 +27,7 @@ const ChoreCard = (props) => {
         <Text style={styles.chorePoints}>{props.choreInfo.points}</Text>
         <Text style={styles.chorePointsText}>Points</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

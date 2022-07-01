@@ -10,7 +10,7 @@ const HouseholdsModal = () => {
   return (
     <View style={styles.modalContainer}>
       <Text style={styles.modalTitle}>Households</Text>
-      <Text style={styles.modalSubTitle}>Tap household to switch to</Text>
+      <Text style={styles.modalSubTitle}>Tap to switch household</Text>
       <View style={styles.contentContainer}>
         <FlatList
           showsVerticalScrollIndicator={false}

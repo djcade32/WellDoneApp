@@ -10,13 +10,13 @@ export default StyleSheet.create({
     textAlign: "center",
     fontFamily: "poppins-medium",
     fontSize: 24,
-    color: Colors.textColor,
+    color: "white",
   },
   modalSubTitle: {
     textAlign: "center",
     fontFamily: "poppins",
     fontSize: 16,
-    color: Colors.textColor,
+    color: "white",
     marginBottom: 15,
   },
   contentContainer: {
