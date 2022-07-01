@@ -32,13 +32,16 @@ const HomeScreen = () => {
         {/* Header text container */}
         <View style={styles.header}>
           <View style={styles.greetingsContainer}>
-            <Pressable>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate("HouseholdsModal")}
+            >
               <MaterialCommunityIcons
                 name="folder-home"
                 size={40}
                 color={Colors.darkGreen}
               />
-            </Pressable>
+            </TouchableOpacity>
             <View style={{ width: "100%" }}>
               <Text
                 style={[
@@ -52,7 +55,8 @@ const HomeScreen = () => {
                 Hi, {USER.first}
               </Text>
             </View>
-            <Pressable
+            <TouchableOpacity
+              activeOpacity={0.5}
               onPress={() => alert("Go to user profile")}
               style={styles.profileIconCircle}
             >
@@ -61,7 +65,7 @@ const HomeScreen = () => {
                 size={40}
                 color={Colors.darkGreen}
               />
-            </Pressable>
+            </TouchableOpacity>
           </View>
           <View style={styles.introContainer}>
             <Text style={styles.introSecondaryText}>Let's complete your</Text>
@@ -87,7 +91,7 @@ const HomeScreen = () => {
               ))}
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => alert("Add family member")}
+                onPress={() => navigation.navigate("AddFamilyMemberModal")}
                 style={{ marginRight: 15, paddingTop: 15 }}
               >
                 <View style={styles.addFamilyMemberCircle}>
