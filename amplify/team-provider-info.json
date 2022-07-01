@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-welldoneapp-staging-185024-authRole",
+      "UnauthRoleArn": "arn:aws:iam::061561016350:role/amplify-welldoneapp-staging-185024-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::061561016350:role/amplify-welldoneapp-staging-185024-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-welldoneapp-staging-185024-deployment",
+      "UnauthRoleName": "amplify-welldoneapp-staging-185024-unauthRole",
+      "StackName": "amplify-welldoneapp-staging-185024",
+      "StackId": "arn:aws:cloudformation:us-east-1:061561016350:stack/amplify-welldoneapp-staging-185024/8096edf0-f8a5-11ec-832d-0a27fe721f61",
+      "AmplifyAppId": "dwionam4tlnvb"
+    },
+    "categories": {
+      "auth": {
+        "WellDoneApp": {}
+      }
+    }
+  }
+}

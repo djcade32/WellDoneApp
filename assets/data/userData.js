@@ -4,17 +4,17 @@ const User = [
     first: "Norman",
     last: "Cade",
     gender: "Male",
-    houseHoldInvites: [
+    householdInvites: [
       {
         userId: 23454,
         houseHoldId: 321,
         status: "PENDING",
       },
     ],
-    houseHoldIds: [123, 321, 334],
+    householdIds: [123, 321, 334],
     userDoneChores: [
       {
-        houseHoldId: 123,
+        householdId: 123,
         choreId: 2341,
         timeCompleted: "12:00:32",
         dateCompleted: "12/30/2021",
@@ -27,10 +27,10 @@ const User = [
     first: "Chloe",
     last: "Habelreeh",
     gender: "Female",
-    houseHoldIds: [123, 321, 334],
+    householdIds: [123, 321, 334],
     userDoneChores: [
       {
-        houseHoldId: 123,
+        householdId: 123,
         choreId: 2341,
         timeCompleted: "12:00:32",
         dateCompleted: "12/30/2021",
@@ -43,10 +43,10 @@ const User = [
     first: "David",
     last: "Spencer",
     gender: "Male",
-    houseHoldIds: [123, 321, 334],
+    householdIds: [123, 321, 334],
     userDoneChores: [
       {
-        houseHoldId: 123,
+        householdId: 123,
         choreId: 2341,
         timeCompleted: "12:00:32",
         dateCompleted: "12/30/2021",
@@ -59,7 +59,7 @@ const HouseHold = [
   {
     id: 123,
     createdBy: 94134,
-    houseHoldUsers: [94134, 43221, 99001],
+    householdUsers: [94134, 43221, 99001],
     numberOfMembers: 3,
     availableChores: [
       {

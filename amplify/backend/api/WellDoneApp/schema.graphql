@@ -1,0 +1,47 @@
+type Chores {
+  id: ID!
+  name: String!
+  points: Int!
+  icon: Int!
+}
+
+type Household @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  creatorId: String!
+  householdMembers: [String!]
+  numberOfMembers: Int!
+  availableChores: [Chores]
+  name: String!
+}
+
+type UserDoneChores {
+  householdId: String!
+  choreId: String!
+  timeCompleted: AWSTime!
+  dateCompleted: AWSDate!
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+type HouseholdInvite {
+  id: ID!
+  senderId: String!
+  receiverId: String!
+  householdId: String!
+  status: InviteStatus
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  firstName: String!
+  lastName: String
+  gender: String
+  householdInvites: [HouseholdInvite]
+  householdIds: [String]
+  choresDone: [UserDoneChores]
+}
+ 
