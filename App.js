@@ -16,6 +16,11 @@ import FamilyMemberScreen from "./src/screens/FamilyMemberScreen/FamilyMemberScr
 import AddChoreScreen from "./src/screens/AddChoreScreen/AddChoreScreen";
 import RootNavigator from "./src/navigation";
 import { NavigationContainer } from "@react-navigation/native";
+import { Amplify, Analytics } from "aws-amplify";
+import { withAuthenticator } from "aws-amplify-react-native";
+import awsconfig from "./src/aws-exports";
+
+Amplify.configure({ ...awsconfig, Analytics: { disabled: true } });
 
 // Loading fonts
 function fetchFonts() {
@@ -85,6 +90,8 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+// export default withAuthenticator(App);
 
 const styles = StyleSheet.create({
   container: {

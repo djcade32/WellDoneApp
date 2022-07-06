@@ -49,6 +49,28 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "adminIds": {
+                    "name": "adminIds",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Users": {
+                    "name": "Users",
+                    "isArray": true,
+                    "type": {
+                        "model": "HouseholdUser"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "household"
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -150,6 +172,27 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
+                "households": {
+                    "name": "households",
+                    "isArray": true,
+                    "type": {
+                        "model": "HouseholdUser"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "user"
+                    }
+                },
+                "sub": {
+                    "name": "sub",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -187,6 +230,86 @@ export const schema = {
                                     "read"
                                 ]
                             }
+                        ]
+                    }
+                }
+            ]
+        },
+        "HouseholdUser": {
+            "name": "HouseholdUser",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "household": {
+                    "name": "household",
+                    "isArray": false,
+                    "type": {
+                        "model": "Household"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "householdID"
+                    }
+                },
+                "user": {
+                    "name": "user",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "userID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "HouseholdUsers",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byHousehold",
+                        "fields": [
+                            "householdID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
                         ]
                     }
                 }
@@ -237,39 +360,6 @@ export const schema = {
                 }
             }
         },
-        "UserDoneChores": {
-            "name": "UserDoneChores",
-            "fields": {
-                "householdId": {
-                    "name": "householdId",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "choreId": {
-                    "name": "choreId",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "timeCompleted": {
-                    "name": "timeCompleted",
-                    "isArray": false,
-                    "type": "AWSTime",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "dateCompleted": {
-                    "name": "dateCompleted",
-                    "isArray": false,
-                    "type": "AWSDate",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
         "HouseholdInvite": {
             "name": "HouseholdInvite",
             "fields": {
@@ -311,7 +401,40 @@ export const schema = {
                     "attributes": []
                 }
             }
+        },
+        "UserDoneChores": {
+            "name": "UserDoneChores",
+            "fields": {
+                "householdId": {
+                    "name": "householdId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "choreId": {
+                    "name": "choreId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "timeCompleted": {
+                    "name": "timeCompleted",
+                    "isArray": false,
+                    "type": "AWSTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "dateCompleted": {
+                    "name": "dateCompleted",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
         }
     },
-    "version": "8d2ed84ff76e223b6bcb007001f9c28f"
+    "version": "3af9a3ed5a6a054ec9c2e8da58e3a14e"
 };

@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3welldoneappstorage901e50d8",
+  "bucketName": "welldoneapp-storage-901e50d8",
+  "policyUUID": "137922ae",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

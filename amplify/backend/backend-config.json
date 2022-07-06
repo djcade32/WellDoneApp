@@ -47,5 +47,12 @@
         ]
       }
     }
+  },
+  "storage": {
+    "s3welldoneappstorage901e50d8": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

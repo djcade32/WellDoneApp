@@ -5,6 +5,7 @@ import FamilyMemberScreen from "../screens/FamilyMemberScreen/FamilyMemberScreen
 import AddChoreScreen from "../screens/AddChoreScreen/AddChoreScreen";
 import AddFamilyMemberModal from "../screens/Modals/AddFamilyMemberModal/AddFamilyMemberModal";
 import HouseholdsModal from "../screens/Modals/HouseholdsModal/HouseholdsModal";
+import OnboardingScreen from "../screens/OnboardingScreen/OnboardingScreen";
 
 const Stack = createNativeStackNavigator();
 const RootStack = createStackNavigator();
@@ -20,7 +21,7 @@ export default function RootNavigator() {
     // </Stack.Navigator>
     <RootStack.Navigator>
       <RootStack.Group>
-        <RootStack.Screen
+        {/* <RootStack.Screen
           name="HomeScreen"
           component={HomeScreen}
           options={{ headerShown: false }}
@@ -33,6 +34,11 @@ export default function RootNavigator() {
         <RootStack.Screen
           name="AddChoreScreen"
           component={AddChoreScreen}
+          options={{ headerShown: false }}
+        /> */}
+        <RootStack.Screen
+          name="OnboardingScreen"
+          component={OnboardingScreen}
           options={{ headerShown: false }}
         />
       </RootStack.Group>

@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "WellDoneApp",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-ce1264a7-c41a-4560-8ecf-f1f02250acbb/amplify/backend/api/WellDoneApp/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-49b85d46-5c8c-4c82-b0e3-0c0a96fa1cb0/amplify/backend/api/WellDoneApp/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",

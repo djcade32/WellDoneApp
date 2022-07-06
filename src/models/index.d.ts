@@ -14,14 +14,6 @@ export declare class Chores {
   constructor(init: ModelInit<Chores>);
 }
 
-export declare class UserDoneChores {
-  readonly householdId: string;
-  readonly choreId: string;
-  readonly timeCompleted: string;
-  readonly dateCompleted: string;
-  constructor(init: ModelInit<UserDoneChores>);
-}
-
 export declare class HouseholdInvite {
   readonly id: string;
   readonly senderId: string;
@@ -29,6 +21,14 @@ export declare class HouseholdInvite {
   readonly householdId: string;
   readonly status?: InviteStatus | keyof typeof InviteStatus | null;
   constructor(init: ModelInit<HouseholdInvite>);
+}
+
+export declare class UserDoneChores {
+  readonly householdId: string;
+  readonly choreId: string;
+  readonly timeCompleted: string;
+  readonly dateCompleted: string;
+  constructor(init: ModelInit<UserDoneChores>);
 }
 
 type HouseholdMetaData = {
@@ -39,6 +39,10 @@ type UserMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type HouseholdUserMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 export declare class Household {
   readonly id: string;
   readonly creatorId: string;
@@ -46,6 +50,8 @@ export declare class Household {
   readonly numberOfMembers: number;
   readonly availableChores?: (Chores | null)[] | null;
   readonly name: string;
+  readonly adminIds?: string[] | null;
+  readonly Users?: (HouseholdUser | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Household, HouseholdMetaData>);
@@ -60,8 +66,20 @@ export declare class User {
   readonly householdInvites?: (HouseholdInvite | null)[] | null;
   readonly householdIds?: (string | null)[] | null;
   readonly choresDone?: (UserDoneChores | null)[] | null;
+  readonly households?: (HouseholdUser | null)[] | null;
+  readonly sub: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<User, UserMetaData>);
   static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
+}
+
+export declare class HouseholdUser {
+  readonly id: string;
+  readonly household: Household;
+  readonly user: User;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  constructor(init: ModelInit<HouseholdUser, HouseholdUserMetaData>);
+  static copyOf(source: HouseholdUser, mutator: (draft: MutableModel<HouseholdUser, HouseholdUserMetaData>) => MutableModel<HouseholdUser, HouseholdUserMetaData> | void): HouseholdUser;
 }
