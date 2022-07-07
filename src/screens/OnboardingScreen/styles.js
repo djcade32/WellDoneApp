@@ -82,12 +82,13 @@ export default StyleSheet.create({
     backgroundColor: "transparent",
     height: 35,
     width: "100%",
+    borderBottomColor: "white",
+    borderBottomWidth: 1,
   },
   addChoreButtonContainer: {
     backgroundColor: Colors.lightGreen,
     flexDirection: "row",
     width: "80%",
-    // marginTop: 20,
     marginLeft: "auto",
     marginTop: "auto",
     marginBottom: 65,
@@ -109,5 +110,10 @@ export default StyleSheet.create({
     fontFamily: "poppins-medium",
     fontSize: 16,
     marginLeft: 25,
+  },
+  errorMessage: {
+    marginTop: 5,
+    color: "red",
+    fontFamily: "poppins",
   },
 });
