@@ -8,13 +8,14 @@ const InviteStatus = {
   "DECLINED": "DECLINED"
 };
 
-const { Household, User, HouseholdUser, Chores, HouseholdInvite, UserDoneChores } = initSchema(schema);
+const { Household, User, HouseholdUser, HouseholdMember, Chores, HouseholdInvite, UserDoneChores } = initSchema(schema);
 
 export {
   Household,
   User,
   HouseholdUser,
   InviteStatus,
+  HouseholdMember,
   Chores,
   HouseholdInvite,
   UserDoneChores

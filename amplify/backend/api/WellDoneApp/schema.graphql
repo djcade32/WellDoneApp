@@ -1,3 +1,8 @@
+type HouseholdMember {
+  id: String!
+  points: Int!
+}
+
 type Chores {
   id: ID!
   name: String!
@@ -8,16 +13,16 @@ type Chores {
 type Household @model @auth(rules: [{allow: public}]) {
   id: ID!
   creatorId: String!
-  householdMembers: [String!]
-  numberOfMembers: Int!
+  householdMembers: [HouseholdMember!]
   availableChores: [Chores]
   name: String!
   adminIds: [String!]
   Users: [User] @manyToMany(relationName: "HouseholdUser")
+  doneChores: UserDoneChores
 }
 
 type UserDoneChores {
-  householdId: String!
+  userId: String!
   choreId: String!
   timeCompleted: AWSTime!
   dateCompleted: AWSDate!
@@ -44,8 +49,8 @@ type User @model @auth(rules: [{allow: public}]) {
   gender: String
   householdInvites: [HouseholdInvite]
   householdIds: [String]
-  choresDone: [UserDoneChores]
   households: [Household] @manyToMany(relationName: "HouseholdUser")
-  sub: Int!
+  sub: String!
+  imageId: String
 }
  

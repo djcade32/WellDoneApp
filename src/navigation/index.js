@@ -6,11 +6,14 @@ import AddChoreScreen from "../screens/AddChoreScreen/AddChoreScreen";
 import AddFamilyMemberModal from "../screens/Modals/AddFamilyMemberModal/AddFamilyMemberModal";
 import HouseholdsModal from "../screens/Modals/HouseholdsModal/HouseholdsModal";
 import OnboardingScreen from "../screens/OnboardingScreen/OnboardingScreen";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const Stack = createNativeStackNavigator();
 const RootStack = createStackNavigator();
 
 export default function RootNavigator() {
+  const { dbUser, sub } = useAuthContext();
+
   return (
     // <Stack.Navigator
     //   screenOptions={{
@@ -30,17 +33,31 @@ export default function RootNavigator() {
           name="FamilyMemberScreen"
           component={FamilyMemberScreen}
           options={{ headerShown: false }}
+        /> */}
+        {sub && dbUser ? (
+          <RootStack.Screen
+            name="HomeScreen"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+        ) : (
+          <RootStack.Screen
+            name="OnboardingScreen"
+            component={OnboardingScreen}
+            options={{ headerShown: false }}
+          />
+        )}
+        {/* 
+        <RootStack.Screen
+          name="FamilyMemberScreen"
+          component={FamilyMemberScreen}
+          options={{ headerShown: false }}
         />
         <RootStack.Screen
           name="AddChoreScreen"
           component={AddChoreScreen}
           options={{ headerShown: false }}
         /> */}
-        <RootStack.Screen
-          name="OnboardingScreen"
-          component={OnboardingScreen}
-          options={{ headerShown: false }}
-        />
       </RootStack.Group>
       <RootStack.Group
         screenOptions={{ presentation: "modal", headerShown: false }}

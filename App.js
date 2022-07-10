@@ -19,6 +19,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Amplify, Analytics } from "aws-amplify";
 import { withAuthenticator } from "aws-amplify-react-native";
 import awsconfig from "./src/aws-exports";
+import AuthContextProvider from "./src/contexts/AuthContext";
 
 Amplify.configure({ ...awsconfig, Analytics: { disabled: true } });
 
@@ -31,7 +32,7 @@ function fetchFonts() {
   });
 }
 
-export default function App() {
+function App() {
   // const [appIsReady, setAppIsReady] = useState(false);
 
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -85,13 +86,15 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <RootNavigator />
+      <AuthContextProvider>
+        <RootNavigator />
+      </AuthContextProvider>
       <StatusBar style="auto" />
     </NavigationContainer>
   );
 }
 
-// export default withAuthenticator(App);
+export default withAuthenticator(App);
 
 const styles = StyleSheet.create({
   container: {
