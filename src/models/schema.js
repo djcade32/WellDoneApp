@@ -20,17 +20,12 @@ export const schema = {
                 "householdMembers": {
                     "name": "householdMembers",
                     "isArray": true,
-                    "type": "String",
+                    "type": {
+                        "nonModel": "HouseholdMember"
+                    },
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": true
-                },
-                "numberOfMembers": {
-                    "name": "numberOfMembers",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
                 },
                 "availableChores": {
                     "name": "availableChores",
@@ -70,6 +65,15 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "household"
                     }
+                },
+                "doneChores": {
+                    "name": "doneChores",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "UserDoneChores"
+                    },
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -162,16 +166,6 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "choresDone": {
-                    "name": "choresDone",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "UserDoneChores"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
                 "households": {
                     "name": "households",
                     "isArray": true,
@@ -189,8 +183,15 @@ export const schema = {
                 "sub": {
                     "name": "sub",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "imageId": {
+                    "name": "imageId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -327,6 +328,25 @@ export const schema = {
         }
     },
     "nonModels": {
+        "HouseholdMember": {
+            "name": "HouseholdMember",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "points": {
+                    "name": "points",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
         "Chores": {
             "name": "Chores",
             "fields": {
@@ -405,8 +425,8 @@ export const schema = {
         "UserDoneChores": {
             "name": "UserDoneChores",
             "fields": {
-                "householdId": {
-                    "name": "householdId",
+                "userId": {
+                    "name": "userId",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -436,5 +456,5 @@ export const schema = {
             }
         }
     },
-    "version": "3af9a3ed5a6a054ec9c2e8da58e3a14e"
+    "version": "818259a99ce56d4281742d868d57a698"
 };

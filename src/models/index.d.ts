@@ -6,6 +6,12 @@ export enum InviteStatus {
   DECLINED = "DECLINED"
 }
 
+export declare class HouseholdMember {
+  readonly id: string;
+  readonly points: number;
+  constructor(init: ModelInit<HouseholdMember>);
+}
+
 export declare class Chores {
   readonly id: string;
   readonly name: string;
@@ -24,7 +30,7 @@ export declare class HouseholdInvite {
 }
 
 export declare class UserDoneChores {
-  readonly householdId: string;
+  readonly userId: string;
   readonly choreId: string;
   readonly timeCompleted: string;
   readonly dateCompleted: string;
@@ -46,12 +52,12 @@ type HouseholdUserMetaData = {
 export declare class Household {
   readonly id: string;
   readonly creatorId: string;
-  readonly householdMembers?: string[] | null;
-  readonly numberOfMembers: number;
+  readonly householdMembers?: HouseholdMember[] | null;
   readonly availableChores?: (Chores | null)[] | null;
   readonly name: string;
   readonly adminIds?: string[] | null;
   readonly Users?: (HouseholdUser | null)[] | null;
+  readonly doneChores?: UserDoneChores | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Household, HouseholdMetaData>);
@@ -65,9 +71,9 @@ export declare class User {
   readonly gender?: string | null;
   readonly householdInvites?: (HouseholdInvite | null)[] | null;
   readonly householdIds?: (string | null)[] | null;
-  readonly choresDone?: (UserDoneChores | null)[] | null;
   readonly households?: (HouseholdUser | null)[] | null;
-  readonly sub: number;
+  readonly sub: string;
+  readonly imageId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<User, UserMetaData>);

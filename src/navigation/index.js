@@ -6,11 +6,23 @@ import AddChoreScreen from "../screens/AddChoreScreen/AddChoreScreen";
 import AddFamilyMemberModal from "../screens/Modals/AddFamilyMemberModal/AddFamilyMemberModal";
 import HouseholdsModal from "../screens/Modals/HouseholdsModal/HouseholdsModal";
 import OnboardingScreen from "../screens/OnboardingScreen/OnboardingScreen";
+import { useAuthContext } from "../contexts/AuthContext";
+import { ActivityIndicator, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const RootStack = createStackNavigator();
 
+function ActivityIndicatorComponent() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator size={"large"} color={"gray"} />
+    </View>
+  );
+}
+
 export default function RootNavigator() {
+  const { dbUser, sub } = useAuthContext();
+
   return (
     // <Stack.Navigator
     //   screenOptions={{
@@ -30,17 +42,41 @@ export default function RootNavigator() {
           name="FamilyMemberScreen"
           component={FamilyMemberScreen}
           options={{ headerShown: false }}
+        /> */}
+        {!dbUser ? (
+          <RootStack.Screen
+            name="ActivityIndicator"
+            component={ActivityIndicatorComponent}
+            options={{ headerShown: false }}
+          />
+        ) : (
+          <>
+            {sub && dbUser ? (
+              <RootStack.Screen
+                name="HomeScreen"
+                component={HomeScreen}
+                options={{ headerShown: false }}
+              />
+            ) : (
+              <RootStack.Screen
+                name="OnboardingScreen"
+                component={OnboardingScreen}
+                options={{ headerShown: false }}
+              />
+            )}
+          </>
+        )}
+        {/* 
+        <RootStack.Screen
+          name="FamilyMemberScreen"
+          component={FamilyMemberScreen}
+          options={{ headerShown: false }}
         />
         <RootStack.Screen
           name="AddChoreScreen"
           component={AddChoreScreen}
           options={{ headerShown: false }}
         /> */}
-        <RootStack.Screen
-          name="OnboardingScreen"
-          component={OnboardingScreen}
-          options={{ headerShown: false }}
-        />
       </RootStack.Group>
       <RootStack.Group
         screenOptions={{ presentation: "modal", headerShown: false }}

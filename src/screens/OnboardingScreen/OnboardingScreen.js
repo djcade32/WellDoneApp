@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import styles from "./styles";
 import * as ImagePicker from "expo-image-picker";
@@ -18,10 +18,13 @@ import Colors from "../../constants/Colors";
 import SelectDropdown from "react-native-select-dropdown";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
-import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
+import { User } from "../../models";
+import { DataStore, Storage } from "aws-amplify";
+import { useAuthContext } from "../../contexts/AuthContext";
+import uuid from "react-native-uuid";
 
 const OnboardingScreen = () => {
-  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+  const { dbUser, sub, setDbUser } = useAuthContext();
   const [image, setImage] = useState(null);
   const navigation = useNavigation();
   const {
@@ -37,7 +40,6 @@ const OnboardingScreen = () => {
       gender: "",
     },
   });
-
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -47,21 +49,53 @@ const OnboardingScreen = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
   };
 
   function handleDonePress(data) {
-    const userObj = { ...data, image: image };
+    const userObj = { ...data, image: image, imageId: uuid.v4() };
+    // console.log("User object:", userObj);
+    createUser(userObj);
+    // create user here
     // navigation.navigate("HomeScreen");
   }
 
-  // useEffect(() => {
-  //   console.log("User info: ", userInfoObj);
-  // }, [userInfoObj]);
+  async function createUser({ firstName, lastName, gender, image, imageId }) {
+    try {
+      const user = await DataStore.save(
+        new User({
+          firstName,
+          lastName,
+          gender,
+          sub,
+          imageId,
+        })
+      )
+        .then(setDbUser)
+        .then(uploadProfilePic(imageId, image));
+    } catch (e) {
+      console.log("Error creating user:");
+      console.log(e);
+    }
+  }
+
+  async function uploadProfilePic(userId, imagePath) {
+    try {
+      const response = await fetch(imagePath);
+      const blob = await response.blob();
+      await Storage.put(userId, blob, {
+        level: "protected",
+        contentType: "image/jpeg", // contentType is optional
+        completeCallback: () => {
+          console.log("Succesful Upload");
+        },
+      });
+    } catch (err) {
+      console.log("Error uploading file:", err);
+    }
+  }
 
   return (
     <ImageBackground style={{ flex: 1 }} source={BgImage} resizeMode="cover">

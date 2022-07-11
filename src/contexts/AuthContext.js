@@ -20,6 +20,8 @@ const AuthContextProvider = (props) => {
       if (users.length >= 1) {
         console.log("User: ", users[0]);
         setDbUser(users[0]);
+      } else {
+        console.log("User not found");
       }
     });
   }, [sub]);
