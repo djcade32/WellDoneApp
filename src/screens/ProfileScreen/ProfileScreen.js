@@ -7,7 +7,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import React from "react";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import userData from "../../../assets/data/userData";
 import ChoreCard from "../../components/ChoreCard/ChoreCard";
@@ -53,7 +53,10 @@ const ProfileScreen = () => {
           <Pressable onPress={() => navigation.goBack()}>
             <Feather name="arrow-left" size={35} color={Colors.darkGreen} />
           </Pressable>
-          <View>
+          <View style={styles.profileIconCircle}>
+            <FontAwesome5 name="user-alt" size={40} color={Colors.darkGreen} />
+          </View>
+          {/* <View>
             <Text style={styles.familyMemberName}>
               {USER.first + " " + USER.last}
             </Text>
@@ -61,7 +64,10 @@ const ProfileScreen = () => {
               <Text style={styles.userPoints}>256</Text>
               <Text style={styles.pointsText}> Points</Text>
             </View>
-          </View>
+          </View> */}
+          <Pressable onPress={() => alert("Open settings modal")}>
+            <FontAwesome name="gear" size={35} color={Colors.darkGreen} />
+          </Pressable>
         </View>
         <View style={styles.contentContainer}>
           <View style={styles.calendar}>

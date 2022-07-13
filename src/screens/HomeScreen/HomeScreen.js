@@ -57,7 +57,7 @@ const HomeScreen = () => {
             </View>
             <TouchableOpacity
               activeOpacity={0.5}
-              onPress={() => alert("Go to user profile")}
+              onPress={() => navigation.navigate("ProfileScreen")}
               style={styles.profileIconCircle}
             >
               <FontAwesome5

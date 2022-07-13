@@ -6,11 +6,9 @@ import AddChoreScreen from "../screens/AddChoreScreen/AddChoreScreen";
 import AddFamilyMemberModal from "../screens/Modals/AddFamilyMemberModal/AddFamilyMemberModal";
 import HouseholdsModal from "../screens/Modals/HouseholdsModal/HouseholdsModal";
 import OnboardingScreen from "../screens/OnboardingScreen/OnboardingScreen";
+import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import { useAuthContext } from "../contexts/AuthContext";
-<<<<<<< HEAD
 import { ActivityIndicator, View } from "react-native";
-=======
->>>>>>> bad2ad5910169b3e2e3bd8e9cfafc1cf2b691f71
 
 const Stack = createNativeStackNavigator();
 const RootStack = createStackNavigator();
@@ -55,11 +53,18 @@ export default function RootNavigator() {
         ) : (
           <>
             {sub && dbUser ? (
-              <RootStack.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{ headerShown: false }}
-              />
+              <>
+                <RootStack.Screen
+                  name="HomeScreen"
+                  component={HomeScreen}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="ProfileScreen"
+                  component={ProfileScreen}
+                  options={{ headerShown: false }}
+                />
+              </>
             ) : (
               <RootStack.Screen
                 name="OnboardingScreen"

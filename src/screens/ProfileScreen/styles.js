@@ -9,6 +9,14 @@ export default StyleSheet.create({
     // borderColor: "red",
     justifyContent: "space-around",
   },
+  profileIconCircle: {
+    borderWidth: 1,
+    borderColor: Colors.darkGreen,
+    borderRadius: 50,
+    overflow: "hidden",
+    // marginLeft: "auto",
+    // marginRight: 50,
+  },
   familyMemberName: {
     fontSize: 24,
     fontFamily: "poppins-medium",
