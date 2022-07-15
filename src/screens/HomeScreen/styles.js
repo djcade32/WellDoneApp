@@ -2,12 +2,12 @@ import { StyleSheet } from "react-native";
 import Colors from "../../constants/Colors";
 
 export default StyleSheet.create({
-  header: { marginTop: 30 },
+  header: { marginTop: 15 },
   greetingsContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 25,
-    marginHorizontal: 25,
+    marginHorizontal: 15,
   },
   introText: {
     fontSize: 24,
@@ -15,12 +15,31 @@ export default StyleSheet.create({
     color: Colors.textColor,
   },
   profileIconCircle: {
-    borderWidth: 1,
-    borderColor: Colors.darkGreen,
-    borderRadius: 50,
+    width: 60,
+    height: 60,
+    borderRadius: 60 / 2,
     overflow: "hidden",
-    marginLeft: "auto",
-    // marginRight: 50,
+    alignItems: "center",
+    top: 10,
+  },
+  initials: {
+    flexDirection: "row",
+  },
+  initialsFont: {
+    fontFamily: "poppins-medium",
+    color: Colors.darkGreen,
+    fontSize: 32,
+  },
+  imageContainer: {
+    backgroundColor: Colors.darkGray,
+    height: 60,
+    width: 60,
+    borderRadius: 60 / 2,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    borderColor: Colors.darkGreen,
+    borderWidth: 1,
   },
   introSecondaryText: {
     fontSize: 16,

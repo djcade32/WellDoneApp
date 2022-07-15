@@ -6,17 +6,17 @@ import {
   Pressable,
   SafeAreaView,
   Image,
+  TouchableOpacity,
 } from "react-native";
-import React, { useState, useMemo } from "react";
-import { Feather, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import userData from "../../../assets/data/userData";
 import ChoreCard from "../../components/ChoreCard/ChoreCard";
 import BgImage from "../../../assets/images/familyMemberScreenBgImage.png";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
-import { DataStore, Storage } from "aws-amplify";
-import { useAuthContext } from "../../contexts/AuthContext";
+import { useUserInfoContext } from "../../contexts/UserInfoContext";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
@@ -40,16 +40,10 @@ const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
-  const { dbUser, sub, setDbUser } = useAuthContext();
-  const [imageUrl, setImageUrl] = useState(null);
-
-  // TODO: Move fetching profile pic logic to its own context.
-  useMemo(async () => {
-    const url = await Storage.get(dbUser.imageId, {
-      level: "protected",
-    });
-    setImageUrl(url);
-  }, [dbUser.imageId]);
+  const { currentUser } = useUserInfoContext();
+  const [currentUserState, setCurrentUserState] = useState(
+    currentUser ? currentUser : null
+  );
 
   // Code to get day of the week
   const d = new Date("June 23, 2022");
@@ -69,30 +63,32 @@ const ProfileScreen = () => {
           </Pressable>
 
           <View style={{ alignItems: "center" }}>
-            <View style={styles.imageContainer}>
-              {imageUrl ? (
-                <Image
-                  source={{ uri: imageUrl }}
-                  style={{
-                    width: 80,
-                    height: 80,
-                  }}
-                />
-              ) : (
-                <View style={styles.profileIconCircle}>
-                  <FontAwesome5
-                    name="user-alt"
-                    size={80}
-                    color={Colors.darkGreen}
+            <View style={styles.profilePicContainer}>
+              <View style={styles.imageContainer}>
+                {currentUserState?.image ? (
+                  <Image
+                    source={{ uri: currentUserState.image }}
+                    style={{
+                      width: 80,
+                      height: 80,
+                    }}
                   />
-                </View>
-              )}
+                ) : (
+                  <View style={styles.initials}>
+                    <Text style={styles.initialsFont}>{USER.first[0]}</Text>
+                    <Text style={styles.initialsFont}>{USER.last[0]}</Text>
+                  </View>
+                )}
+              </View>
             </View>
             <Text style={styles.userName}>{USER.first + " " + USER.last}</Text>
           </View>
-          <Pressable onPress={() => alert("Open settings modal")}>
-            <FontAwesome name="gear" size={35} color={Colors.darkGreen} />
-          </Pressable>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate("ProfileSettingsModal")}
+          >
+            <FontAwesome5 name="user-cog" size={30} color={Colors.darkGreen} />
+          </TouchableOpacity>
         </View>
         <View style={styles.pointsContainer}>
           <View

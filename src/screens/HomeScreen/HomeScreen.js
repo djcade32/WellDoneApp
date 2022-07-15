@@ -6,8 +6,9 @@ import {
   SafeAreaView,
   Pressable,
   TouchableOpacity,
+  Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles";
 import userData from "../../../assets/data/userData";
 import {
@@ -20,12 +21,20 @@ import FamilyMemberProfiles from "../../components/FamilyMemberProfiles/FamilyMe
 import ChoreCard from "../../components/ChoreCard/ChoreCard";
 import BgImage from "../../../assets/images/homeScreenBgImage.png";
 import { useNavigation } from "@react-navigation/native";
+import { useUserInfoContext } from "../../contexts/UserInfoContext";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const { currentUser } = useUserInfoContext();
+  const [image, setImage] = useState(currentUser?.image);
+
+  useEffect(() => {
+    setImage(currentUser?.image);
+  }, [currentUser]);
+
   return (
     <ImageBackground source={BgImage} resizeMode="cover">
       <SafeAreaView style={{ paddingBottom: 50 }}>
@@ -42,30 +51,45 @@ const HomeScreen = () => {
                 color={Colors.darkGreen}
               />
             </TouchableOpacity>
-            <View style={{ width: "100%" }}>
-              <Text
-                style={[
-                  styles.introText,
-                  {
-                    textAlign: "right",
-                    maxWidth: "70%",
-                  },
-                ]}
+            <View
+              style={{
+                marginLeft: "auto",
+              }}
+            >
+              <Text style={styles.introText}>Hi, {USER.first}</Text>
+            </View>
+            <View style={{ marginLeft: 30 }}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => navigation.navigate("ProfileScreen")}
+                style={styles.imageContainer}
               >
-                Hi, {USER.first}
+                {image ? (
+                  <Image
+                    source={{ uri: image }}
+                    style={{
+                      width: 60,
+                      height: 60,
+                    }}
+                  />
+                ) : (
+                  <View style={styles.initials}>
+                    <Text style={[styles.initialsFont]}>{USER.first[0]}</Text>
+                    <Text style={styles.initialsFont}>{USER.last[0]}</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: Colors.lightGreen,
+                  fontFamily: "poppins",
+                  fontSize: 16,
+                }}
+              >
+                256 pts
               </Text>
             </View>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => navigation.navigate("ProfileScreen")}
-              style={styles.profileIconCircle}
-            >
-              <FontAwesome5
-                name="user-alt"
-                size={40}
-                color={Colors.darkGreen}
-              />
-            </TouchableOpacity>
           </View>
           <View style={styles.introContainer}>
             <Text style={styles.introSecondaryText}>Let's complete your</Text>

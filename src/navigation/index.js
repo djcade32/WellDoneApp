@@ -5,6 +5,7 @@ import FamilyMemberScreen from "../screens/FamilyMemberScreen/FamilyMemberScreen
 import AddChoreScreen from "../screens/AddChoreScreen/AddChoreScreen";
 import AddFamilyMemberModal from "../screens/Modals/AddFamilyMemberModal/AddFamilyMemberModal";
 import HouseholdsModal from "../screens/Modals/HouseholdsModal/HouseholdsModal";
+import ProfileSettingsModal from "../screens/Modals/ProfileSettingsModal/ProfileSettingsModal";
 import OnboardingScreen from "../screens/OnboardingScreen/OnboardingScreen";
 import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import { useAuthContext } from "../contexts/AuthContext";
@@ -94,6 +95,10 @@ export default function RootNavigator() {
           component={AddFamilyMemberModal}
         />
         <RootStack.Screen name="HouseholdsModal" component={HouseholdsModal} />
+        <RootStack.Screen
+          name="ProfileSettingsModal"
+          component={ProfileSettingsModal}
+        />
       </RootStack.Group>
     </RootStack.Navigator>
   );
