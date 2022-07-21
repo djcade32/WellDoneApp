@@ -21,10 +21,12 @@ import { useForm, Controller } from "react-hook-form";
 import { User } from "../../models";
 import { DataStore, Storage } from "aws-amplify";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { useUserInfoContext } from "../../contexts/UserInfoContext";
 import uuid from "react-native-uuid";
 
 const OnboardingScreen = () => {
   const { dbUser, sub, setDbUser } = useAuthContext();
+  const { uploadProfilePic } = useUserInfoContext();
   const [image, setImage] = useState(null);
   const navigation = useNavigation();
   const {
@@ -78,22 +80,6 @@ const OnboardingScreen = () => {
     } catch (e) {
       console.log("Error creating user:");
       console.log(e);
-    }
-  }
-
-  async function uploadProfilePic(imageId, imagePath) {
-    try {
-      const response = await fetch(imagePath);
-      const blob = await response.blob();
-      await Storage.put(imageId, blob, {
-        level: "protected",
-        contentType: "image/jpeg", // contentType is optional
-        completeCallback: () => {
-          console.log("Succesful Upload");
-        },
-      });
-    } catch (err) {
-      console.log("Error uploading file:", err);
     }
   }
 

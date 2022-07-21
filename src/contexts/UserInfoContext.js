@@ -24,27 +24,19 @@ const UserInfoContextProvider = (props) => {
     console.log("Updating current user: ", dbUser);
   }, [dbUser]);
 
-  async function updateProfilePic(imageId, image) {
-    console.log("Updating profile pic");
-    const oldImageId = dbUser?.imageId;
+  async function uploadProfilePic(imageId, imagePath) {
     try {
-      const user = await DataStore.save(
-        User.copyOf(dbUser, (updated) => {
-          updated.imageId = imageId;
-        })
-      ).then(uploadProfilePic(imageId, image));
-      setDbUser(user);
-
-      //   ).then(() => {
-      //     console.log("setDbUser() called");
-      //     setDbUser(user);
-      //   });
-      // .then(uploadProfilePic(imageId, image));
-      //   if (oldImageId) {
-      //     deleteProfilePic(oldImageId);
-      //   }
-    } catch (e) {
-      console.log(e);
+      const response = await fetch(imagePath);
+      const blob = await response.blob();
+      await Storage.put(imageId, blob, {
+        level: "protected",
+        contentType: "image/jpeg", // contentType is optional
+        completeCallback: () => {
+          console.log("Succesful Upload");
+        },
+      });
+    } catch (err) {
+      console.log("Error uploading file:", err);
     }
   }
 
@@ -53,6 +45,7 @@ const UserInfoContextProvider = (props) => {
     try {
       await Storage.remove(imageId, { level: "protected" });
     } catch {
+      console.log("Removing old profile pic unsuccessful");
       console.log(e);
     }
   }
@@ -76,24 +69,10 @@ const UserInfoContextProvider = (props) => {
   //     }
   //   }
 
-  async function uploadProfilePic(imageId, imagePath) {
-    try {
-      const response = await fetch(imagePath);
-      const blob = await response.blob();
-      await Storage.put(imageId, blob, {
-        level: "protected",
-        contentType: "image/jpeg", // contentType is optional
-        completeCallback: () => {
-          console.log("Succesful Upload");
-        },
-      });
-    } catch (err) {
-      console.log("Error uploading file:", err);
-    }
-  }
-
   return (
-    <UserInfoContext.Provider value={{ currentUser, updateProfilePic }}>
+    <UserInfoContext.Provider
+      value={{ currentUser, uploadProfilePic, deleteProfilePic }}
+    >
       {props.children}
     </UserInfoContext.Provider>
   );

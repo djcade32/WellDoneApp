@@ -25,8 +25,9 @@ import uuid from "react-native-uuid";
 import { useUserInfoContext } from "../../../contexts/UserInfoContext";
 
 const ProfileSettingsModal = () => {
-  const { currentUser } = useUserInfoContext();
-  const { dbUser, sub, setDbUser } = useAuthContext();
+  const { currentUser, uploadProfilePic, deleteProfilePic } =
+    useUserInfoContext();
+  const { dbUser, sub, setDbUser, getCurrentUser } = useAuthContext();
   const [image, setImage] = useState(currentUser?.image);
   const navigation = useNavigation();
   const [editMode, setEditMode] = useState(false);
@@ -82,46 +83,51 @@ const ProfileSettingsModal = () => {
   }
 
   async function updateUser(updatedUserObj) {
+    let imageId = updatedUserObj.imageId;
+    let userPicChanged = false;
     if (currentUser.image !== image) {
-      updatedUserObj.imageId = uuid.v4();
+      deleteProfilePic(currentUser?.imageId);
+      imageId = uuid.v4();
       console.log("current user changed image");
+      userPicChanged = true;
     }
     try {
+      const originalUserInfo = await getCurrentUser();
       const user = await DataStore.save(
-        User.copyOf(dbUser, (updated) => {
+        User.copyOf(originalUserInfo, (updated) => {
           updated.firstName = updatedUserObj.firstName;
           updated.lastName = updatedUserObj.lastName;
           updated.gender = updatedUserObj.gender;
           updated.image = updatedUserObj.image;
-          updated.imageId = updatedUserObj.imageId;
+          updated.imageId = imageId;
         })
       );
       console.log("Update user profile: ", user);
-      //   setDbUser(user);
-      //   if (currentUser.image !== image) {
-      //     uploadProfilePic(imageId, image);
-      //   }
+      setDbUser(user);
+      if (userPicChanged) {
+        uploadProfilePic(imageId, image);
+      }
     } catch (e) {
       console.log("Error creating user:");
       console.log(e);
     }
   }
 
-  async function uploadProfilePic(imageId, imagePath) {
-    try {
-      const response = await fetch(imagePath);
-      const blob = await response.blob();
-      await Storage.put(imageId, blob, {
-        level: "protected",
-        contentType: "image/jpeg", // contentType is optional
-        completeCallback: () => {
-          console.log("Succesful Upload");
-        },
-      });
-    } catch (err) {
-      console.log("Error uploading file:", err);
-    }
-  }
+  //   async function uploadProfilePic(imageId, imagePath) {
+  //     try {
+  //       const response = await fetch(imagePath);
+  //       const blob = await response.blob();
+  //       await Storage.put(imageId, blob, {
+  //         level: "protected",
+  //         contentType: "image/jpeg", // contentType is optional
+  //         completeCallback: () => {
+  //           console.log("Succesful Upload");
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.log("Error uploading file:", err);
+  //     }
+  //   }
 
   function isEquivalent(a, b) {
     // Create arrays of property names
@@ -171,12 +177,14 @@ const ProfileSettingsModal = () => {
                 </View>
               )}
             </View>
-            <Pressable
-              onPress={pickImage}
-              style={styles.changeProfilePicButton}
-            >
-              <MaterialIcons name="edit" size={24} color={Colors.lightGray} />
-            </Pressable>
+            {editMode && (
+              <Pressable
+                onPress={pickImage}
+                style={styles.changeProfilePicButton}
+              >
+                <MaterialIcons name="edit" size={24} color={Colors.lightGray} />
+              </Pressable>
+            )}
           </View>
           <View style={styles.textInputsContainer}>
             <View style={styles.inputContainer}>

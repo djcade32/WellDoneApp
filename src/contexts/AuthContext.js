@@ -26,6 +26,19 @@ const AuthContextProvider = (props) => {
     });
   }, [sub]);
 
+  function getCurrentUser() {
+    const currentUser = DataStore.query(User, (user) =>
+      user.sub("eq", sub)
+    ).then((users) => {
+      if (users.length >= 1) {
+        return users[0];
+      } else {
+        console.log("User not found");
+      }
+    });
+    return currentUser;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -33,6 +46,7 @@ const AuthContextProvider = (props) => {
         dbUser,
         sub,
         setDbUser,
+        getCurrentUser,
       }}
     >
       {props.children}
