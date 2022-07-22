@@ -61,101 +61,102 @@ const ProfileScreen = () => {
     setLastName(currentUser?.lastName);
   }, [currentUser]);
   return (
-    <ImageBackground source={BgImage} resizeMode="cover">
-      <SafeAreaView>
-        <View style={styles.headerContainer}>
-          <Pressable onPress={() => navigation.goBack()}>
-            <Feather name="arrow-left" size={35} color={Colors.darkGreen} />
-          </Pressable>
+    <ImageBackground
+      style={{ flex: 1, paddingTop: 50 }}
+      source={BgImage}
+      resizeMode="cover"
+    >
+      <View style={styles.headerContainer}>
+        <Pressable onPress={() => navigation.goBack()}>
+          <Feather name="arrow-left" size={35} color={Colors.darkGreen} />
+        </Pressable>
 
-          <View style={{ alignItems: "center" }}>
-            <View style={styles.profilePicContainer}>
-              <View style={styles.imageContainer}>
-                {image ? (
-                  <Image
-                    source={{ uri: image }}
-                    style={{
-                      width: 80,
-                      height: 80,
-                    }}
-                  />
-                ) : (
-                  <View style={styles.initials}>
-                    <Text style={styles.initialsFont}>{firstName[0]}</Text>
-                    <Text style={styles.initialsFont}>{lastName[0]}</Text>
-                  </View>
-                )}
-              </View>
+        <View style={{ alignItems: "center" }}>
+          <View style={styles.profilePicContainer}>
+            <View style={styles.imageContainer}>
+              {image ? (
+                <Image
+                  source={{ uri: image }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                  }}
+                />
+              ) : (
+                <View style={styles.initials}>
+                  <Text style={styles.initialsFont}>{firstName[0]}</Text>
+                  <Text style={styles.initialsFont}>{lastName[0]}</Text>
+                </View>
+              )}
             </View>
-            <Text style={styles.userName}>{firstName + " " + lastName}</Text>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate("ProfileSettingsModal")}
-          >
-            <FontAwesome5 name="user-cog" size={30} color={Colors.darkGreen} />
-          </TouchableOpacity>
+          <Text style={styles.userName}>{firstName + " " + lastName}</Text>
         </View>
-        <View style={styles.pointsContainer}>
-          <View
-            style={{
-              paddingTop: 10,
-              paddingBottom: 10,
-            }}
-          >
-            <Text style={styles.pointsText}>Points</Text>
-            <Text style={styles.userPoints}>256</Text>
-          </View>
-          <View style={styles.contentContainer}>
-            <View style={styles.calendar}>
-              <FlatList
-                style={{ width: "80%", alignSelf: "center" }}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                data={MONTHS}
-                renderItem={({ item }) => (
-                  <Text style={styles.calendarMonthText}>{item}</Text>
-                )}
-              />
-              <FlatList
-                snapToInterval={50}
-                contentContainerStyle={{ paddingLeft: 25 }}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                data={[...Array(daysInMonth)]}
-                renderItem={(data) => {
-                  const d = new Date("June" + (data.index + 1) + ", 2022");
-                  let day = d.getDay();
-                  return (
-                    <View style={styles.calendarDatesContainer}>
-                      <Text style={styles.calendarDateNumber}>
-                        {data.index + 1}
-                      </Text>
-                      <Text style={styles.calendarDateDay}>{DAYS[day]}</Text>
-                    </View>
-                  );
-                }}
-              />
-            </View>
-            <Text style={[styles.choresTitle, { marginLeft: 25 }]}>
-              {USER.first}'s Chores
-            </Text>
-            <Text style={[styles.choresSubTitle, { marginLeft: 25 }]}>
-              {USER.first} has {USER.userDoneChores.length} chore done on May
-              14.
-            </Text>
-
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate("ProfileSettingsModal")}
+        >
+          <FontAwesome5 name="user-cog" size={30} color={Colors.darkGreen} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.pointsContainer}>
+        <View
+          style={{
+            paddingTop: 10,
+            paddingBottom: 10,
+          }}
+        >
+          <Text style={styles.pointsText}>Points</Text>
+          <Text style={styles.userPoints}>256</Text>
+        </View>
+        <View style={styles.contentContainer}>
+          <View style={styles.calendar}>
             <FlatList
+              style={{ width: "80%", alignSelf: "center" }}
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              data={MONTHS}
+              renderItem={({ item }) => (
+                <Text style={styles.calendarMonthText}>{item}</Text>
+              )}
+            />
+            <FlatList
+              snapToInterval={50}
               contentContainerStyle={{ paddingLeft: 25 }}
               showsHorizontalScrollIndicator={false}
-              style={{ marginTop: 20 }}
               horizontal={true}
-              data={HOUSEHOLD.availableChores}
-              renderItem={({ item }) => <ChoreCard choreInfo={item} />}
+              data={[...Array(daysInMonth)]}
+              renderItem={(data) => {
+                const d = new Date("June" + (data.index + 1) + ", 2022");
+                let day = d.getDay();
+                return (
+                  <View style={styles.calendarDatesContainer}>
+                    <Text style={styles.calendarDateNumber}>
+                      {data.index + 1}
+                    </Text>
+                    <Text style={styles.calendarDateDay}>{DAYS[day]}</Text>
+                  </View>
+                );
+              }}
             />
           </View>
+          <Text style={[styles.choresTitle, { marginLeft: 25 }]}>
+            {USER.first}'s Chores
+          </Text>
+          <Text style={[styles.choresSubTitle, { marginLeft: 25 }]}>
+            {USER.first} has {USER.userDoneChores.length} chore done on May 14.
+          </Text>
+
+          <FlatList
+            contentContainerStyle={{ paddingLeft: 25 }}
+            showsHorizontalScrollIndicator={false}
+            style={{ marginTop: 20 }}
+            horizontal={true}
+            data={HOUSEHOLD.availableChores}
+            renderItem={({ item }) => <ChoreCard choreInfo={item} />}
+          />
         </View>
-      </SafeAreaView>
+      </View>
     </ImageBackground>
   );
 };

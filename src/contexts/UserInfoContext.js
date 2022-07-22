@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo, useContext } from "react";
+import { createContext, useState, useMemo, useContext, useEffect } from "react";
 import { Storage, DataStore } from "aws-amplify";
 import { useAuthContext } from "./AuthContext";
 import { User } from "../models";
@@ -8,18 +8,28 @@ const UserInfoContext = createContext({});
 
 const UserInfoContextProvider = (props) => {
   const { dbUser, setDbUser, getCurrentUser } = useAuthContext();
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState({
+    firstName: dbUser?.firstName,
+    lastName: dbUser?.lastName,
+    gender: dbUser?.gender,
+    image: null,
+    imageId: dbUser?.imageId,
+    // householdIds: [{}, {}],
+    householdIds: dbUser?.householdIds,
+  });
 
   useMemo(async () => {
     const url = await Storage.get(dbUser?.imageId, {
       level: "protected",
     });
     setCurrentUser({
-      firstName: dbUser?.firstName,
-      lastName: dbUser?.lastName,
-      gender: dbUser?.gender,
+      firstName: dbUser?.firstName ?? "",
+      lastName: dbUser?.lastName ?? "",
+      gender: dbUser?.gender ?? "",
       image: url,
-      imageId: dbUser?.imageId,
+      imageId: dbUser?.imageId ?? "",
+      householdIds: [{}, {}],
+      // householdIds: dbUser?.householdIds ?? [],
     });
     console.log("Updating current user: ", dbUser);
   }, [dbUser]);

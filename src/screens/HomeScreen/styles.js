@@ -53,13 +53,14 @@ export default StyleSheet.create({
   contentContainer: {
     backgroundColor: "white",
     height: "100%",
+    flex: 1,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    paddingTop: 25,
-    paddingBottom: 50,
+    alignSelf: "stretch",
   },
   familyMemberContainer: {
-    height: "17%",
+    paddingTop: 25,
+    height: "35%",
     marginLeft: 50,
   },
   familyMemberTitle: {
@@ -114,5 +115,12 @@ export default StyleSheet.create({
     fontFamily: "poppins-medium",
     fontSize: 16,
     marginLeft: 25,
+  },
+  createHouseholdText: {
+    color: Colors.darkGreen,
+    fontFamily: "poppins-medium",
+    fontSize: 16,
+    width: "85%",
+    textAlign: "center",
   },
 });
