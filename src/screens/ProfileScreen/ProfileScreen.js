@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import userData from "../../../assets/data/userData";
@@ -41,9 +41,9 @@ const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const { currentUser } = useUserInfoContext();
-  const [currentUserState, setCurrentUserState] = useState(
-    currentUser ? currentUser : null
-  );
+  const [image, setImage] = useState(currentUser?.image ?? null);
+  const [firstName, setFirstName] = useState(currentUser?.firstName);
+  const [lastName, setLastName] = useState(currentUser?.lastName);
 
   // Code to get day of the week
   const d = new Date("June 23, 2022");
@@ -54,6 +54,12 @@ const ProfileScreen = () => {
   var month = dt.getMonth() + 1;
   var year = dt.getFullYear();
   let daysInMonth = new Date(year, month, 0).getDate();
+
+  useMemo(() => {
+    setImage(currentUser?.image ?? null);
+    setFirstName(currentUser?.firstName);
+    setLastName(currentUser?.lastName);
+  }, [currentUser]);
   return (
     <ImageBackground source={BgImage} resizeMode="cover">
       <SafeAreaView>
@@ -65,9 +71,9 @@ const ProfileScreen = () => {
           <View style={{ alignItems: "center" }}>
             <View style={styles.profilePicContainer}>
               <View style={styles.imageContainer}>
-                {currentUserState?.image ? (
+                {image ? (
                   <Image
-                    source={{ uri: currentUserState.image }}
+                    source={{ uri: image }}
                     style={{
                       width: 80,
                       height: 80,
@@ -75,13 +81,13 @@ const ProfileScreen = () => {
                   />
                 ) : (
                   <View style={styles.initials}>
-                    <Text style={styles.initialsFont}>{USER.first[0]}</Text>
-                    <Text style={styles.initialsFont}>{USER.last[0]}</Text>
+                    <Text style={styles.initialsFont}>{firstName[0]}</Text>
+                    <Text style={styles.initialsFont}>{lastName[0]}</Text>
                   </View>
                 )}
               </View>
             </View>
-            <Text style={styles.userName}>{USER.first + " " + USER.last}</Text>
+            <Text style={styles.userName}>{firstName + " " + lastName}</Text>
           </View>
           <TouchableOpacity
             activeOpacity={0.5}

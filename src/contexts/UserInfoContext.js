@@ -7,7 +7,7 @@ import uuid from "react-native-uuid";
 const UserInfoContext = createContext({});
 
 const UserInfoContextProvider = (props) => {
-  const { dbUser, setDbUser } = useAuthContext();
+  const { dbUser, setDbUser, getCurrentUser } = useAuthContext();
   const [currentUser, setCurrentUser] = useState(null);
 
   useMemo(async () => {
@@ -23,6 +23,37 @@ const UserInfoContextProvider = (props) => {
     });
     console.log("Updating current user: ", dbUser);
   }, [dbUser]);
+
+  async function updateUser(updatedUserObj, image) {
+    let imageId = updatedUserObj.imageId;
+    let userPicChanged = false;
+    if (currentUser.image !== image) {
+      deleteProfilePic(currentUser?.imageId);
+      imageId = uuid.v4();
+      console.log("current user changed image");
+      userPicChanged = true;
+    }
+    try {
+      const originalUserInfo = await getCurrentUser();
+      const user = await DataStore.save(
+        User.copyOf(originalUserInfo, (updated) => {
+          updated.firstName = updatedUserObj.firstName;
+          updated.lastName = updatedUserObj.lastName;
+          updated.gender = updatedUserObj.gender;
+          updated.image = updatedUserObj.image;
+          updated.imageId = imageId;
+        })
+      );
+      console.log("Update user profile: ", user);
+      setDbUser(user);
+      if (userPicChanged) {
+        uploadProfilePic(imageId, image);
+      }
+    } catch (e) {
+      console.log("Error creating user:");
+      console.log(e);
+    }
+  }
 
   async function uploadProfilePic(imageId, imagePath) {
     try {
@@ -71,7 +102,7 @@ const UserInfoContextProvider = (props) => {
 
   return (
     <UserInfoContext.Provider
-      value={{ currentUser, uploadProfilePic, deleteProfilePic }}
+      value={{ currentUser, uploadProfilePic, deleteProfilePic, updateUser }}
     >
       {props.children}
     </UserInfoContext.Provider>

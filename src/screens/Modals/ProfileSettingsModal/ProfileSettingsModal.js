@@ -25,8 +25,7 @@ import uuid from "react-native-uuid";
 import { useUserInfoContext } from "../../../contexts/UserInfoContext";
 
 const ProfileSettingsModal = () => {
-  const { currentUser, uploadProfilePic, deleteProfilePic } =
-    useUserInfoContext();
+  const { currentUser, updateUser } = useUserInfoContext();
   const { dbUser, sub, setDbUser, getCurrentUser } = useAuthContext();
   const [image, setImage] = useState(currentUser?.image);
   const navigation = useNavigation();
@@ -73,61 +72,9 @@ const ProfileSettingsModal = () => {
     };
     // console.log("user obj", updatedUserObj);
     if (!isEquivalent(updatedUserObj, currentUser)) {
-      updateUser(updatedUserObj);
-    }
-
-    // // console.log("User object:", userObj);
-
-    // // create user here
-    // // navigation.navigate("HomeScreen");
-  }
-
-  async function updateUser(updatedUserObj) {
-    let imageId = updatedUserObj.imageId;
-    let userPicChanged = false;
-    if (currentUser.image !== image) {
-      deleteProfilePic(currentUser?.imageId);
-      imageId = uuid.v4();
-      console.log("current user changed image");
-      userPicChanged = true;
-    }
-    try {
-      const originalUserInfo = await getCurrentUser();
-      const user = await DataStore.save(
-        User.copyOf(originalUserInfo, (updated) => {
-          updated.firstName = updatedUserObj.firstName;
-          updated.lastName = updatedUserObj.lastName;
-          updated.gender = updatedUserObj.gender;
-          updated.image = updatedUserObj.image;
-          updated.imageId = imageId;
-        })
-      );
-      console.log("Update user profile: ", user);
-      setDbUser(user);
-      if (userPicChanged) {
-        uploadProfilePic(imageId, image);
-      }
-    } catch (e) {
-      console.log("Error creating user:");
-      console.log(e);
+      updateUser(updatedUserObj, image);
     }
   }
-
-  //   async function uploadProfilePic(imageId, imagePath) {
-  //     try {
-  //       const response = await fetch(imagePath);
-  //       const blob = await response.blob();
-  //       await Storage.put(imageId, blob, {
-  //         level: "protected",
-  //         contentType: "image/jpeg", // contentType is optional
-  //         completeCallback: () => {
-  //           console.log("Succesful Upload");
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.log("Error uploading file:", err);
-  //     }
-  //   }
 
   function isEquivalent(a, b) {
     // Create arrays of property names

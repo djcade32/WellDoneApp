@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styles from "./styles";
 import userData from "../../../assets/data/userData";
 import {
@@ -29,10 +29,14 @@ const HOUSEHOLD = userData.HouseHold[0];
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { currentUser } = useUserInfoContext();
-  const [image, setImage] = useState(currentUser?.image);
+  const [image, setImage] = useState(currentUser?.image ?? null);
+  const [firstName, setFirstName] = useState(currentUser?.firstName);
+  const [lastName, setLastName] = useState(currentUser?.lastName);
 
-  useEffect(() => {
-    setImage(currentUser?.image);
+  useMemo(() => {
+    setImage(currentUser?.image ?? null);
+    setFirstName(currentUser?.firstName);
+    setLastName(currentUser?.lastName);
   }, [currentUser]);
 
   return (
@@ -56,7 +60,7 @@ const HomeScreen = () => {
                 marginLeft: "auto",
               }}
             >
-              <Text style={styles.introText}>Hi, {USER.first}</Text>
+              <Text style={styles.introText}>Hi, {firstName}</Text>
             </View>
             <View style={{ marginLeft: 30 }}>
               <TouchableOpacity
@@ -74,8 +78,8 @@ const HomeScreen = () => {
                   />
                 ) : (
                   <View style={styles.initials}>
-                    <Text style={[styles.initialsFont]}>{USER.first[0]}</Text>
-                    <Text style={styles.initialsFont}>{USER.last[0]}</Text>
+                    <Text style={[styles.initialsFont]}>{firstName[0]}</Text>
+                    <Text style={styles.initialsFont}>{lastName[0]}</Text>
                   </View>
                 )}
               </TouchableOpacity>
