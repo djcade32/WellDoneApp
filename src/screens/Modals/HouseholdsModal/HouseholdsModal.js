@@ -3,10 +3,13 @@ import React from "react";
 import styles from "./styles";
 import HouseholdCard from "../../../components/ModalComponents/HouseholdCard/HouseholdCard";
 import userData from "../../../../assets/data/userData";
+import { useAuthContext } from "../../../contexts/AuthContext";
 
 const USER = userData.User[0];
 
 const HouseholdsModal = () => {
+  const { dbUser } = useAuthContext();
+
   return (
     <View style={styles.modalContainer}>
       <Text style={styles.modalTitle}>Households</Text>
@@ -15,8 +18,8 @@ const HouseholdsModal = () => {
         <FlatList
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.householdsContainer}
-          data={USER.householdIds}
-          renderItem={() => <HouseholdCard />}
+          data={dbUser?.householdIds}
+          renderItem={({ item }) => <HouseholdCard householdId={item} />}
         />
       </View>
     </View>
