@@ -29,6 +29,7 @@ import { useUserInfoContext } from "../../contexts/UserInfoContext";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useHouseholdContext } from "../../contexts/HouseholdContext";
 import { Storage, DataStore } from "aws-amplify";
+import EmptyChoresList from "../../components/EmptyChoresList/EmptyChoresList";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
@@ -85,31 +86,6 @@ const HomeScreen = () => {
       return;
     }
     setCreateHouseholdButtonPress(true);
-  }
-
-  function emptyChoresComponent() {
-    return (
-      <View style={{ flexDirection: "row", alignContent: "center" }}>
-        <Image source={emptyChoresImage} style={{ width: 150, height: 150 }} />
-        <View
-          style={{
-            width: "40%",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              textAlign: "center",
-              color: Colors.textColor,
-              fontFamily: "poppins",
-            }}
-          >
-            There are currently no chores to complete. Let's create a chore!
-          </Text>
-          <Text></Text>
-        </View>
-      </View>
-    );
   }
 
   return (
@@ -239,7 +215,7 @@ const HomeScreen = () => {
                 horizontal={true}
                 data={currentAvailableChores}
                 renderItem={({ item }) => <ChoreCard choreInfo={item} />}
-                ListEmptyComponent={emptyChoresComponent}
+                ListEmptyComponent={EmptyChoresList}
               />
             </View>
 
