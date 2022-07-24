@@ -8,6 +8,13 @@ export default StyleSheet.create({
     width: 50,
     height: 50,
     justifyContent: "center",
+  },
+  imageContainer: {
+    borderRadius: 50 / 2,
+    backgroundColor: Colors.lightGray,
+    width: 50,
+    height: 50,
+    justifyContent: "center",
     marginRight: 15,
     marginTop: 15,
     alignItems: "center",

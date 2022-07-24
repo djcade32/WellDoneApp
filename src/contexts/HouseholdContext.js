@@ -36,10 +36,9 @@ const HouseholdContextProvider = (props) => {
     }
   }, [dbUser?.activeHouseholdId]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (currentHousehold) {
       console.log("Populating Household Members");
-
       currentHousehold.householdMembers.forEach((member) => {
         console.log(currentHousehold.householdMembers.length);
         DataStore.query(User, (user) => user.id("eq", member.id)).then(

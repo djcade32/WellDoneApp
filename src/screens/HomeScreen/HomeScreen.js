@@ -27,6 +27,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useUserInfoContext } from "../../contexts/UserInfoContext";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useHouseholdContext } from "../../contexts/HouseholdContext";
+import { Storage, DataStore } from "aws-amplify";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
@@ -41,7 +42,7 @@ const HomeScreen = () => {
     currentHouseholdMembers,
   } = useHouseholdContext();
   const { dbUser } = useAuthContext();
-  const [image, setImage] = useState(dbUser?.imageUrl);
+  const [image, setImage] = useState("");
   const [firstName, setFirstName] = useState(dbUser?.firstName);
   const [lastName, setLastName] = useState(dbUser?.lastName);
   const [householdIds, setHouseholdIds] = useState(dbUser?.householdIds);
@@ -53,11 +54,20 @@ const HomeScreen = () => {
   useMemo(() => {
     console.log("Setting User Info on home screen");
     console.log("User on Home screen: ", dbUser);
-    setImage(dbUser?.imageUrl ?? null);
+    Storage.get(dbUser?.imageId, {
+      level: "protected",
+    }).then((url) => setImage(url ?? null));
     setFirstName(dbUser?.firstName);
     setLastName(dbUser?.lastName);
     setHouseholdIds(dbUser?.householdIds);
   }, [dbUser]);
+
+  useEffect(() => {
+    console.log("Setting User Profile Pic on home screen");
+    Storage.get(dbUser?.imageId, {
+      level: "protected",
+    }).then((url) => setImage(url));
+  }, []);
 
   function handleCreateHouseholdPress() {
     if (createHouseholdButtonPress) {
@@ -148,6 +158,7 @@ const HomeScreen = () => {
         {/* Family member content container */}
         {householdIds.length > 0 ? (
           <>
+            {/* If user is apart of at least one household show this */}
             <View style={styles.familyMemberContainer}>
               <Text style={styles.familyMemberTitle}>Family Members</Text>
               <Text style={styles.familyMemberSubTitle}>
@@ -216,6 +227,7 @@ const HomeScreen = () => {
               justifyContent: "center",
             }}
           >
+            {/* If user is not apart of at least one household show this */}
             <Image
               style={{ width: 200, height: 100, alignSelf: "center" }}
               source={NoHouseholdImage}

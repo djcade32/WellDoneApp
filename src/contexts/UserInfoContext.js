@@ -18,38 +18,21 @@ const UserInfoContextProvider = (props) => {
   });
 
   async function updateUser(updatedUserObj, image) {
-    let imageId = updatedUserObj.imageId;
-    let userPicChanged = false;
-    let user = null;
     try {
       const originalUserInfo = await getCurrentUser();
-      if (dbUser?.imageUrl !== image) {
-        deleteProfilePic(dbUser?.imageId);
-        imageId = uuid.v4();
+      if (dbUser?.imageId !== updatedUserObj.imageId) {
         console.log("current user changed image");
-        userPicChanged = true;
-        await uploadProfilePic(imageId, image);
-        const url = await Storage.get(imageId, {
-          level: "protected",
-        });
-        user = await DataStore.save(
-          User.copyOf(originalUserInfo, (updated) => {
-            updated.firstName = updatedUserObj.firstName;
-            updated.lastName = updatedUserObj.lastName;
-            updated.gender = updatedUserObj.gender;
-            updated.imageUrl = url;
-            updated.imageId = imageId;
-          })
-        );
-      } else {
-        user = await DataStore.save(
-          User.copyOf(originalUserInfo, (updated) => {
-            updated.firstName = updatedUserObj.firstName;
-            updated.lastName = updatedUserObj.lastName;
-            updated.gender = updatedUserObj.gender;
-          })
-        );
+        deleteProfilePic(dbUser?.imageId);
+        await uploadProfilePic(updatedUserObj.imageId, image);
       }
+      const user = await DataStore.save(
+        User.copyOf(originalUserInfo, (updated) => {
+          updated.firstName = updatedUserObj.firstName;
+          updated.lastName = updatedUserObj.lastName;
+          updated.gender = updatedUserObj.gender;
+          updated.imageId = updatedUserObj.imageId;
+        })
+      );
       console.log("Update user profile: ", user);
       setDbUser(user);
     } catch (e) {

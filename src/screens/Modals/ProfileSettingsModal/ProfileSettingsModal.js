@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import styles from "./styles";
 import * as ImagePicker from "expo-image-picker";
@@ -28,6 +28,8 @@ const ProfileSettingsModal = () => {
   const { currentUser, updateUser } = useUserInfoContext();
   const { dbUser, sub, setDbUser, getCurrentUser } = useAuthContext();
   const [image, setImage] = useState(dbUser?.imageUrl);
+  const [imageId, setImageId] = useState(dbUser?.imageId);
+  const [userProfilePicChanged, setUserProfilePicChanged] = useState(false);
   // const [originalImage, setOriginalImage] = useState(dbUser?.imageUrl);
   const navigation = useNavigation();
   const [editMode, setEditMode] = useState(false);
@@ -44,6 +46,13 @@ const ProfileSettingsModal = () => {
       gender: dbUser?.gender,
     },
   });
+
+  useEffect(() => {
+    Storage.get(dbUser?.imageId, {
+      level: "protected",
+    }).then((url) => setImage(url));
+  }, []);
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -55,6 +64,7 @@ const ProfileSettingsModal = () => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      setUserProfilePicChanged(true);
     }
   };
 
@@ -65,16 +75,22 @@ const ProfileSettingsModal = () => {
       return;
     }
     setEditMode(false);
-    console.log("updating user");
-    const updatedUserObj = {
-      ...data,
-      image: image,
-      imageId: dbUser.imageId,
-    };
-    // console.log("user obj", updatedUserObj);
-    if (!isEquivalent(updatedUserObj, dbUser)) {
+    console.log("userProfilePicChanged: ", userProfilePicChanged);
+    if (
+      data.firstName !== dbUser.firstName ||
+      data.lastName !== dbUser.lastName ||
+      data.gender !== dbUser.gender ||
+      userProfilePicChanged
+    ) {
+      console.log("updating user");
+      const updatedUserObj = {
+        ...data,
+        imageId: userProfilePicChanged ? uuid.v4() : dbUser?.imageId,
+      };
       await updateUser(updatedUserObj, image);
+      return;
     }
+    console.log("No change detected");
   }
 
   function isEquivalent(a, b) {

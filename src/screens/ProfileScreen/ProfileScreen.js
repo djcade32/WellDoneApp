@@ -18,6 +18,7 @@ import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { useUserInfoContext } from "../../contexts/UserInfoContext";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { Storage, DataStore } from "aws-amplify";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
@@ -43,7 +44,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
   const { currentUser } = useUserInfoContext();
   const { dbUser, dbUserProfilePic } = useAuthContext();
-  const [image, setImage] = useState(dbUser?.imageUrl ?? null);
+  const [image, setImage] = useState(null);
   const [firstName, setFirstName] = useState(dbUser?.firstName);
   const [lastName, setLastName] = useState(dbUser?.lastName);
 
@@ -58,10 +59,21 @@ const ProfileScreen = () => {
   let daysInMonth = new Date(year, month, 0).getDate();
 
   useMemo(() => {
-    setImage(dbUser?.imageUrl ?? null);
+    console.log("Setting User Info on Profile screen");
+    Storage.get(dbUser?.imageId, {
+      level: "protected",
+    }).then((url) => setImage(url ?? null));
     setFirstName(dbUser?.firstName);
     setLastName(dbUser?.lastName);
   }, [dbUser]);
+
+  useEffect(() => {
+    console.log("Setting User Profile Pic on Profile screen");
+    Storage.get(dbUser?.imageId, {
+      level: "protected",
+    }).then((url) => setImage(url));
+  }, []);
+
   return (
     <ImageBackground
       style={{ flex: 1, paddingTop: 50 }}
