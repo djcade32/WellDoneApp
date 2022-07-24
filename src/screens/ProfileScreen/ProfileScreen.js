@@ -17,6 +17,7 @@ import BgImage from "../../../assets/images/familyMemberScreenBgImage.png";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { useUserInfoContext } from "../../contexts/UserInfoContext";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
@@ -41,9 +42,10 @@ const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const { currentUser } = useUserInfoContext();
-  const [image, setImage] = useState(currentUser?.image ?? null);
-  const [firstName, setFirstName] = useState(currentUser?.firstName);
-  const [lastName, setLastName] = useState(currentUser?.lastName);
+  const { dbUser, dbUserProfilePic } = useAuthContext();
+  const [image, setImage] = useState(dbUser?.imageUrl ?? null);
+  const [firstName, setFirstName] = useState(dbUser?.firstName);
+  const [lastName, setLastName] = useState(dbUser?.lastName);
 
   // Code to get day of the week
   const d = new Date("June 23, 2022");
@@ -56,10 +58,10 @@ const ProfileScreen = () => {
   let daysInMonth = new Date(year, month, 0).getDate();
 
   useMemo(() => {
-    setImage(currentUser?.image ?? null);
-    setFirstName(currentUser?.firstName);
-    setLastName(currentUser?.lastName);
-  }, [currentUser]);
+    setImage(dbUser?.imageUrl ?? null);
+    setFirstName(dbUser?.firstName);
+    setLastName(dbUser?.lastName);
+  }, [dbUser]);
   return (
     <ImageBackground
       style={{ flex: 1, paddingTop: 50 }}

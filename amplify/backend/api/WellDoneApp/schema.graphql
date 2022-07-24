@@ -52,5 +52,7 @@ type User @model @auth(rules: [{allow: public}]) {
   households: [Household] @manyToMany(relationName: "HouseholdUser")
   sub: String!
   imageId: String
+  activeHouseholdId: String
+  imageUrl: String
 }
  

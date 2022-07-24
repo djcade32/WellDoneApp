@@ -27,7 +27,8 @@ import { useUserInfoContext } from "../../../contexts/UserInfoContext";
 const ProfileSettingsModal = () => {
   const { currentUser, updateUser } = useUserInfoContext();
   const { dbUser, sub, setDbUser, getCurrentUser } = useAuthContext();
-  const [image, setImage] = useState(currentUser?.image);
+  const [image, setImage] = useState(dbUser?.imageUrl);
+  // const [originalImage, setOriginalImage] = useState(dbUser?.imageUrl);
   const navigation = useNavigation();
   const [editMode, setEditMode] = useState(false);
   const {
@@ -38,9 +39,9 @@ const ProfileSettingsModal = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      firstName: currentUser?.firstName,
-      lastName: currentUser?.lastName,
-      gender: currentUser?.gender,
+      firstName: dbUser?.firstName,
+      lastName: dbUser?.lastName,
+      gender: dbUser?.gender,
     },
   });
   const pickImage = async () => {
@@ -57,7 +58,7 @@ const ProfileSettingsModal = () => {
     }
   };
 
-  function handleSaveEditPress(data) {
+  async function handleSaveEditPress(data) {
     console.log("Edit Mode: ", editMode);
     if (!editMode) {
       setEditMode(true);
@@ -68,11 +69,11 @@ const ProfileSettingsModal = () => {
     const updatedUserObj = {
       ...data,
       image: image,
-      imageId: currentUser.imageId,
+      imageId: dbUser.imageId,
     };
     // console.log("user obj", updatedUserObj);
-    if (!isEquivalent(updatedUserObj, currentUser)) {
-      updateUser(updatedUserObj, image);
+    if (!isEquivalent(updatedUserObj, dbUser)) {
+      await updateUser(updatedUserObj, image);
     }
   }
 
@@ -232,7 +233,7 @@ const ProfileSettingsModal = () => {
             style={styles.addChoreButtonContainer}
           >
             <Text style={styles.addChoreText}>
-              {editMode ? "Save" : "Edit"}
+              {editMode ? "Save Profile" : "Edit Profile"}
             </Text>
             {editMode && (
               <MaterialIcons

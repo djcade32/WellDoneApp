@@ -8,7 +8,6 @@ const BgImage = (props) => {
       height="2436"
       preserveAspectRatio="none"
       viewBox="0 0 1125 2436"
-      {...props}
     >
       <G mask='url("#SvgjsMask1036")' fill="none">
         <Rect

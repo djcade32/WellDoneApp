@@ -21,6 +21,7 @@ import { withAuthenticator } from "aws-amplify-react-native";
 import awsconfig from "./src/aws-exports";
 import AuthContextProvider from "./src/contexts/AuthContext";
 import UserInfoContextProvider from "./src/contexts/UserInfoContext";
+import HouseholdContextProvider from "./src/contexts/HouseholdContext";
 
 Amplify.configure({ ...awsconfig, Analytics: { disabled: true } });
 
@@ -89,7 +90,9 @@ function App() {
     <NavigationContainer>
       <AuthContextProvider>
         <UserInfoContextProvider>
-          <RootNavigator />
+          <HouseholdContextProvider>
+            <RootNavigator />
+          </HouseholdContextProvider>
         </UserInfoContextProvider>
       </AuthContextProvider>
       <StatusBar style="auto" />

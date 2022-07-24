@@ -65,6 +65,16 @@ export default function RootNavigator() {
                   component={ProfileScreen}
                   options={{ headerShown: false }}
                 />
+                <RootStack.Screen
+                  name="FamilyMemberScreen"
+                  component={FamilyMemberScreen}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="AddChoreScreen"
+                  component={AddChoreScreen}
+                  options={{ headerShown: false }}
+                />
               </>
             ) : (
               <RootStack.Screen
@@ -75,17 +85,6 @@ export default function RootNavigator() {
             )}
           </>
         )}
-        {/* 
-        <RootStack.Screen
-          name="FamilyMemberScreen"
-          component={FamilyMemberScreen}
-          options={{ headerShown: false }}
-        />
-        <RootStack.Screen
-          name="AddChoreScreen"
-          component={AddChoreScreen}
-          options={{ headerShown: false }}
-        /> */}
       </RootStack.Group>
       <RootStack.Group
         screenOptions={{ presentation: "modal", headerShown: false }}

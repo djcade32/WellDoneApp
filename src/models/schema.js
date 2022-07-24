@@ -194,6 +194,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "activeHouseholdId": {
+                    "name": "activeHouseholdId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "imageUrl": {
+                    "name": "imageUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -456,5 +470,5 @@ export const schema = {
             }
         }
     },
-    "version": "818259a99ce56d4281742d868d57a698"
+    "version": "612410850f1e717253403f2001aa5730"
 };

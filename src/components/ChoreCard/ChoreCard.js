@@ -6,6 +6,7 @@ import styles from "./styles";
 import Colors from "../../constants/Colors";
 
 const ChoreCard = (props) => {
+  // TODO: Holding chore card will delete chore
   return (
     <TouchableOpacity
       activeOpacity={0.5}

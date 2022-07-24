@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { Auth, DataStore } from "aws-amplify";
+import { Auth, DataStore, Storage } from "aws-amplify";
 import { User } from "../models";
 
 const AuthContext = createContext({});
@@ -16,14 +16,16 @@ const AuthContextProvider = (props) => {
 
   useEffect(() => {
     console.log("Finding User in DB");
-    DataStore.query(User, (user) => user.sub("eq", sub)).then((users) => {
-      if (users.length >= 1) {
-        console.log("User: ", users[0]);
-        setDbUser(users[0]);
-      } else {
-        console.log("User not found");
-      }
-    });
+    if (authUser !== null) {
+      DataStore.query(User, (user) => user.sub("eq", sub)).then((users) => {
+        if (users.length >= 1) {
+          console.log("User: ", users[0]);
+          setDbUser(users[0]);
+        } else {
+          console.log("User not found");
+        }
+      });
+    }
   }, [sub]);
 
   function getCurrentUser() {

@@ -74,6 +74,8 @@ export declare class User {
   readonly households?: (HouseholdUser | null)[] | null;
   readonly sub: string;
   readonly imageId?: string | null;
+  readonly activeHouseholdId?: string | null;
+  readonly imageUrl?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<User, UserMetaData>);

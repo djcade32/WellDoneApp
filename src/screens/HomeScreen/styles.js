@@ -116,11 +116,65 @@ export default StyleSheet.create({
     fontSize: 16,
     marginLeft: 25,
   },
-  createHouseholdText: {
+  createHouseholdSubText: {
+    color: Colors.lightGreen,
+    fontFamily: "poppins",
+    fontSize: 16,
+    textAlign: "center",
+    lineHeight: 30,
+  },
+  createHouseholdMainText: {
     color: Colors.darkGreen,
     fontFamily: "poppins-medium",
     fontSize: 16,
-    width: "85%",
+    textAlign: "center",
+    lineHeight: 30,
+  },
+  createHouseholdButtonContainer: {
+    backgroundColor: Colors.darkGreen,
+    width: "80%",
+    marginTop: 20,
+    padding: 15,
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+    alignSelf: "center",
+  },
+  createHouseholdButtonText: {
+    color: "white",
+    fontFamily: "poppins-medium",
+    fontSize: 16,
+    textAlign: "center",
+  },
+
+  inputTitle: {
+    fontFamily: "poppins-medium",
+    color: Colors.textColor,
+    marginVertical: 5,
+    textAlign: "center",
+    fontSize: 16,
+  },
+  inputField: {
+    width: "70%",
+    borderBottomColor: Colors.textColor,
+    borderBottomWidth: 1,
+    fontSize: 16,
+    fontFamily: "poppins",
+    paddingBottom: 5,
+    textAlign: "center",
+    alignSelf: "center",
+  },
+  errorMessage: {
+    marginTop: 5,
+    color: "red",
+    fontFamily: "poppins",
     textAlign: "center",
   },
 });

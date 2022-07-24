@@ -7,6 +7,8 @@ import {
   Pressable,
   TouchableOpacity,
   Image,
+  TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useEffect, useState, useMemo } from "react";
 import styles from "./styles";
@@ -20,28 +22,57 @@ import Colors from "../../constants/Colors";
 import FamilyMemberProfiles from "../../components/FamilyMemberProfiles/FamilyMemberProfiles";
 import ChoreCard from "../../components/ChoreCard/ChoreCard";
 import BgImage from "../../../assets/images/homeScreenBgImage.png";
+import NoHouseholdImage from "../../../assets/images/noHouseholdImage.png";
 import { useNavigation } from "@react-navigation/native";
 import { useUserInfoContext } from "../../contexts/UserInfoContext";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { useHouseholdContext } from "../../contexts/HouseholdContext";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const { currentUser } = useUserInfoContext();
+  const { currentUser, getCurrentUserProfilPic } = useUserInfoContext();
+  const {
+    createHousehold,
+    currentHousehold,
+    currentUserPoints,
+    currentHouseholdMembers,
+  } = useHouseholdContext();
   const { dbUser } = useAuthContext();
-  const [image, setImage] = useState(currentUser?.image ?? null);
+  const [image, setImage] = useState(dbUser?.imageUrl);
   const [firstName, setFirstName] = useState(dbUser?.firstName);
-  const [lastName, setLastName] = useState(currentUser?.lastName);
+  const [lastName, setLastName] = useState(dbUser?.lastName);
+  const [householdIds, setHouseholdIds] = useState(dbUser?.householdIds);
+  const [createHouseholdButtonPress, setCreateHouseholdButtonPress] =
+    useState(false);
+  const [householdName, setHouseholdName] = useState("");
+  const [householdNameError, setHouseholdNameError] = useState(false);
 
   useMemo(() => {
     console.log("Setting User Info on home screen");
-    console.log("User on Home screen: ", currentUser);
-    setImage(currentUser?.image ?? null);
-    setFirstName(currentUser?.firstName);
-    setLastName(currentUser?.lastName);
-  }, [currentUser]);
+    console.log("User on Home screen: ", dbUser);
+    setImage(dbUser?.imageUrl ?? null);
+    setFirstName(dbUser?.firstName);
+    setLastName(dbUser?.lastName);
+    setHouseholdIds(dbUser?.householdIds);
+  }, [dbUser]);
+
+  function handleCreateHouseholdPress() {
+    if (createHouseholdButtonPress) {
+      // create household and turn back false
+      if (householdName !== "") {
+        setCreateHouseholdButtonPress(false);
+        createHousehold(householdName);
+      } else {
+        setHouseholdNameError(true);
+      }
+
+      return;
+    }
+    setCreateHouseholdButtonPress(true);
+  }
 
   return (
     <ImageBackground
@@ -98,11 +129,11 @@ const HomeScreen = () => {
                 fontSize: 16,
               }}
             >
-              256 pts
+              {currentUserPoints} pts
             </Text>
           </View>
         </View>
-        {currentUser?.householdIds?.length > 0 && (
+        {householdIds.length > 0 && (
           <View style={styles.introContainer}>
             <Text style={styles.introSecondaryText}>Let's complete your</Text>
             <Text style={styles.introText}>Family Home Chores!</Text>
@@ -110,10 +141,12 @@ const HomeScreen = () => {
         )}
       </View>
       {/* Content container */}
-      <View style={styles.contentContainer}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.contentContainer}
+      >
         {/* Family member content container */}
-
-        {currentUser?.householdIds.length > 0 ? (
+        {householdIds.length > 0 ? (
           <>
             <View style={styles.familyMemberContainer}>
               <Text style={styles.familyMemberTitle}>Family Members</Text>
@@ -126,7 +159,7 @@ const HomeScreen = () => {
                   flexWrap: "wrap",
                 }}
               >
-                {userData.User.map((user) => (
+                {currentHouseholdMembers?.map((user) => (
                   <FamilyMemberProfiles key={user.id} userInfo={user} />
                 ))}
                 <TouchableOpacity
@@ -179,20 +212,65 @@ const HomeScreen = () => {
         ) : (
           <View
             style={{
-              borderColor: "red",
-              borderWidth: 1,
               flex: 1,
-              alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <Text style={styles.createHouseholdText}>
-              You are not apart of any households Let's create a household, so
-              you can start doing chores.
-            </Text>
+            <Image
+              style={{ width: 200, height: 100, alignSelf: "center" }}
+              source={NoHouseholdImage}
+            />
+            <View
+              style={{
+                alignSelf: "center",
+                width: "85%",
+                height: 90,
+                justifyContent: "center",
+              }}
+            >
+              {!createHouseholdButtonPress ? (
+                <>
+                  <Text style={styles.createHouseholdSubText}>
+                    You are not apart of any households.
+                  </Text>
+                  <Text style={styles.createHouseholdMainText}>
+                    Let's create a household, so you can start doing chores.
+                  </Text>
+                </>
+              ) : (
+                <View>
+                  <Text style={styles.inputTitle}>Household Name</Text>
+                  <TextInput
+                    style={styles.inputField}
+                    placeholder="Give household a name"
+                    selectionColor={Colors.textColor}
+                    onChangeText={(value) => {
+                      if (householdNameError) {
+                        setHouseholdNameError(false);
+                      }
+                      setHouseholdName(value);
+                    }}
+                  />
+                  {householdNameError && (
+                    <Text style={styles.errorMessage}>
+                      Must enter household name
+                    </Text>
+                  )}
+                </View>
+              )}
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.createHouseholdButtonContainer}
+              onPress={handleCreateHouseholdPress}
+            >
+              <Text style={styles.createHouseholdButtonText}>
+                {!createHouseholdButtonPress ? "Create Household" : "Done"}
+              </Text>
+            </TouchableOpacity>
           </View>
         )}
-      </View>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 };
