@@ -10,7 +10,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import styles from "./styles";
 import userData from "../../../assets/data/userData";
 import {
@@ -23,6 +23,7 @@ import FamilyMemberProfiles from "../../components/FamilyMemberProfiles/FamilyMe
 import ChoreCard from "../../components/ChoreCard/ChoreCard";
 import BgImage from "../../../assets/images/homeScreenBgImage.png";
 import NoHouseholdImage from "../../../assets/images/noHouseholdImage.png";
+import emptyChoresImage from "../../../assets/images/emptyChoresImage.png";
 import { useNavigation } from "@react-navigation/native";
 import { useUserInfoContext } from "../../contexts/UserInfoContext";
 import { useAuthContext } from "../../contexts/AuthContext";
@@ -33,6 +34,7 @@ const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
 
 const HomeScreen = () => {
+  const choresFlatList = useRef(null);
   const navigation = useNavigation();
   const { currentUser, getCurrentUserProfilPic } = useUserInfoContext();
   const {
@@ -40,6 +42,7 @@ const HomeScreen = () => {
     currentHousehold,
     currentUserPoints,
     currentHouseholdMembers,
+    currentAvailableChores,
   } = useHouseholdContext();
   const { dbUser } = useAuthContext();
   const [image, setImage] = useState("");
@@ -82,6 +85,31 @@ const HomeScreen = () => {
       return;
     }
     setCreateHouseholdButtonPress(true);
+  }
+
+  function emptyChoresComponent() {
+    return (
+      <View style={{ flexDirection: "row", alignContent: "center" }}>
+        <Image source={emptyChoresImage} style={{ width: 150, height: 150 }} />
+        <View
+          style={{
+            width: "40%",
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              color: Colors.textColor,
+              fontFamily: "poppins",
+            }}
+          >
+            There are currently no chores to complete. Let's create a chore!
+          </Text>
+          <Text></Text>
+        </View>
+      </View>
+    );
   }
 
   return (
@@ -197,12 +225,21 @@ const HomeScreen = () => {
               </Text>
               <FlatList
                 contentOffset={[-50, 0]}
-                contentContainerStyle={{ paddingLeft: 50 }}
+                scrollEnabled={currentAvailableChores.length === 0 && false}
+                contentContainerStyle={
+                  currentAvailableChores.length === 0
+                    ? {
+                        paddingLeft: 50,
+                        alignItems: "center",
+                      }
+                    : { paddingLeft: 50 }
+                }
                 showsHorizontalScrollIndicator={false}
-                style={{ marginTop: 20 }}
+                style={{ marginTop: 20, height: 200 }}
                 horizontal={true}
-                data={HOUSEHOLD.availableChores}
+                data={currentAvailableChores}
                 renderItem={({ item }) => <ChoreCard choreInfo={item} />}
+                ListEmptyComponent={emptyChoresComponent}
               />
             </View>
 

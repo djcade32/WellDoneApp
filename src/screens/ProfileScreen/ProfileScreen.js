@@ -18,6 +18,7 @@ import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { useUserInfoContext } from "../../contexts/UserInfoContext";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { useHouseholdContext } from "../../contexts/HouseholdContext";
 import { Storage, DataStore } from "aws-amplify";
 
 const USER = userData.User[0];
@@ -44,6 +45,8 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
   const { currentUser } = useUserInfoContext();
   const { dbUser, dbUserProfilePic } = useAuthContext();
+  const { currentUserPoints } = useHouseholdContext();
+
   const [image, setImage] = useState(null);
   const [firstName, setFirstName] = useState(dbUser?.firstName);
   const [lastName, setLastName] = useState(dbUser?.lastName);
@@ -121,7 +124,7 @@ const ProfileScreen = () => {
           }}
         >
           <Text style={styles.pointsText}>Points</Text>
-          <Text style={styles.userPoints}>256</Text>
+          <Text style={styles.userPoints}>{currentUserPoints}</Text>
         </View>
         <View style={styles.contentContainer}>
           <View style={styles.calendar}>

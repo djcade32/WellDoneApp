@@ -12,6 +12,7 @@ const HouseholdContextProvider = (props) => {
   const [currentHousehold, setCurrentHousehold] = useState(null);
   const [currentUserPoints, setCurrentUserPoints] = useState(0);
   const [currentHouseholdMembers, setCurrentHouseholdMembers] = useState([]);
+  const [currentAvailableChores, setCurrentAvailableChores] = useState([]);
 
   useMemo(() => {
     if (dbUser?.activeHouseholdId != "") {
@@ -57,6 +58,16 @@ const HouseholdContextProvider = (props) => {
     }
   }, [currentHousehold]);
 
+  useMemo(() => {
+    if (currentHousehold && currentHousehold.availableChores.length > 0) {
+      setCurrentAvailableChores(currentHousehold.availableChores);
+    }
+    console.log(
+      "Getting available chores: ",
+      currentHousehold?.availableChores
+    );
+  }, [currentHousehold?.availableChores]);
+
   async function createHousehold(name) {
     try {
       const household = await DataStore.save(
@@ -83,6 +94,7 @@ const HouseholdContextProvider = (props) => {
         currentHousehold,
         currentUserPoints,
         currentHouseholdMembers,
+        currentAvailableChores,
       }}
     >
       {props.children}
