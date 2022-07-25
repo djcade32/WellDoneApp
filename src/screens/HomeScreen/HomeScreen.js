@@ -30,6 +30,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { useHouseholdContext } from "../../contexts/HouseholdContext";
 import { Storage, DataStore } from "aws-amplify";
 import EmptyChoresList from "../../components/EmptyChoresList/EmptyChoresList";
+import { set } from "react-native-reanimated";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
@@ -54,6 +55,9 @@ const HomeScreen = () => {
     useState(false);
   const [householdName, setHouseholdName] = useState("");
   const [householdNameError, setHouseholdNameError] = useState(false);
+  const [householdMembers, setHouseholdMembers] = useState(
+    currentHouseholdMembers
+  );
 
   useMemo(() => {
     console.log("Setting User Info on home screen");
@@ -65,6 +69,13 @@ const HomeScreen = () => {
     setLastName(dbUser?.lastName);
     setHouseholdIds(dbUser?.householdIds);
   }, [dbUser]);
+
+  useMemo(() => {
+    if (currentHouseholdMembers !== null) {
+      console.log("Setting household members on home screen");
+      setHouseholdMembers(currentHouseholdMembers);
+    }
+  }, [currentHouseholdMembers]);
 
   useEffect(() => {
     console.log("Setting User Profile Pic on home screen");
@@ -174,7 +185,7 @@ const HomeScreen = () => {
                   flexWrap: "wrap",
                 }}
               >
-                {currentHouseholdMembers?.map((user) => (
+                {householdMembers.map((user) => (
                   <FamilyMemberProfiles key={user.id} userInfo={user} />
                 ))}
                 <TouchableOpacity

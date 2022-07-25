@@ -90,7 +90,6 @@ export default StyleSheet.create({
     width: "80%",
     marginLeft: "auto",
     marginTop: "auto",
-    marginBottom: 65,
     padding: 15,
     borderBottomLeftRadius: 15,
     borderTopLeftRadius: 15,

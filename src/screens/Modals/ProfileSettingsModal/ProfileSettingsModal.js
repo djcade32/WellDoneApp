@@ -18,20 +18,16 @@ import Colors from "../../../constants/Colors";
 import SelectDropdown from "react-native-select-dropdown";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
-import { User } from "../../../models";
-import { DataStore, Storage } from "aws-amplify";
+import { Storage, Auth } from "aws-amplify";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import uuid from "react-native-uuid";
 import { useUserInfoContext } from "../../../contexts/UserInfoContext";
 
 const ProfileSettingsModal = () => {
-  const { currentUser, updateUser } = useUserInfoContext();
-  const { dbUser, sub, setDbUser, getCurrentUser } = useAuthContext();
+  const { updateUser } = useUserInfoContext();
+  const { dbUser, setDbUser } = useAuthContext();
   const [image, setImage] = useState(dbUser?.imageUrl);
-  const [imageId, setImageId] = useState(dbUser?.imageId);
   const [userProfilePicChanged, setUserProfilePicChanged] = useState(false);
-  // const [originalImage, setOriginalImage] = useState(dbUser?.imageUrl);
-  const navigation = useNavigation();
   const [editMode, setEditMode] = useState(false);
   const {
     setValue,
@@ -260,6 +256,24 @@ const ProfileSettingsModal = () => {
               />
             )}
           </TouchableOpacity>
+
+          <Pressable
+            onPress={() => {
+              Auth.signOut();
+              console.log("User Signed Out: ", dbUser.id);
+            }}
+          >
+            <Text
+              style={{
+                marginVertical: 30,
+                fontFamily: "poppins",
+                fontSize: 16,
+                color: Colors.darkGray,
+              }}
+            >
+              Sign Out
+            </Text>
+          </Pressable>
         </View>
       </SafeAreaView>
     </ImageBackground>

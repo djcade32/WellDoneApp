@@ -10,6 +10,7 @@ import OnboardingScreen from "../screens/OnboardingScreen/OnboardingScreen";
 import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import { useAuthContext } from "../contexts/AuthContext";
 import { ActivityIndicator, View } from "react-native";
+import { useEffect, useState } from "react";
 
 const Stack = createNativeStackNavigator();
 const RootStack = createStackNavigator();
@@ -23,7 +24,15 @@ function ActivityIndicatorComponent() {
 }
 
 export default function RootNavigator() {
-  const { dbUser, sub } = useAuthContext();
+  const { dbUser, sub, isFetchingUser } = useAuthContext();
+  const [ready, setReady] = useState(false);
+
+  // useEffect(() => {
+  //   if (dbUser !== null && sub) {
+  //     console.log("Ready to go");
+  //     setReady(true);
+  //   }
+  // }, [dbUser]);
 
   return (
     // <Stack.Navigator
@@ -45,7 +54,7 @@ export default function RootNavigator() {
           component={FamilyMemberScreen}
           options={{ headerShown: false }}
         /> */}
-        {!dbUser ? (
+        {isFetchingUser ? (
           <RootStack.Screen
             name="ActivityIndicator"
             component={ActivityIndicatorComponent}
@@ -53,7 +62,7 @@ export default function RootNavigator() {
           />
         ) : (
           <>
-            {sub && dbUser ? (
+            {dbUser ? (
               <>
                 <RootStack.Screen
                   name="HomeScreen"
@@ -77,11 +86,13 @@ export default function RootNavigator() {
                 />
               </>
             ) : (
-              <RootStack.Screen
-                name="OnboardingScreen"
-                component={OnboardingScreen}
-                options={{ headerShown: false }}
-              />
+              <>
+                <RootStack.Screen
+                  name="OnboardingScreen"
+                  component={OnboardingScreen}
+                  options={{ headerShown: false }}
+                />
+              </>
             )}
           </>
         )}

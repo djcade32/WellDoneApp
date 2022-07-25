@@ -67,19 +67,18 @@ const OnboardingScreen = () => {
   async function createUser({ firstName, lastName, gender, image, imageId }) {
     try {
       await uploadProfilePic(imageId, image);
-      const url = await Storage.get(imageId, {
-        level: "protected",
-      });
       const user = await DataStore.save(
         new User({
-          firstName,
-          lastName,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
           gender,
           sub,
           imageId,
-          imageUrl: url,
+          householdIds: [],
+          householdInvites: [],
         })
-      ).then(setDbUser(user));
+      );
+      setDbUser(user);
     } catch (e) {
       console.log("Error creating user:");
       console.log(e);

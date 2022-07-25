@@ -57,7 +57,7 @@ export declare class Household {
   readonly name: string;
   readonly adminIds?: string[] | null;
   readonly Users?: (HouseholdUser | null)[] | null;
-  readonly doneChores?: UserDoneChores | null;
+  readonly doneChores?: (UserDoneChores | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Household, HouseholdMetaData>);

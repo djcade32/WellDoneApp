@@ -15,7 +15,7 @@ const HouseholdContextProvider = (props) => {
   const [currentAvailableChores, setCurrentAvailableChores] = useState([]);
 
   useMemo(() => {
-    if (dbUser?.activeHouseholdId != "") {
+    if (dbUser?.activeHouseholdId != "" && dbUser !== null) {
       console.log("Finding active household in DB");
       DataStore.query(Household, (household) =>
         household.id("eq", dbUser?.activeHouseholdId)
@@ -45,6 +45,7 @@ const HouseholdContextProvider = (props) => {
         DataStore.query(User, (user) => user.id("eq", member.id)).then(
           (users) => {
             if (users.length >= 1) {
+              console.log("Adding household member");
               setCurrentHouseholdMembers((prevState) => [
                 ...prevState,
                 users[0],
@@ -59,13 +60,15 @@ const HouseholdContextProvider = (props) => {
   }, [currentHousehold]);
 
   useMemo(() => {
-    if (currentHousehold && currentHousehold.availableChores.length > 0) {
-      setCurrentAvailableChores(currentHousehold.availableChores);
+    if (dbUser !== null && currentHousehold !== null) {
+      if (currentHousehold && currentHousehold.availableChores.length > 0) {
+        setCurrentAvailableChores(currentHousehold.availableChores);
+      }
+      console.log(
+        "Getting available chores: ",
+        currentHousehold?.availableChores
+      );
     }
-    console.log(
-      "Getting available chores: ",
-      currentHousehold?.availableChores
-    );
   }, [currentHousehold?.availableChores]);
 
   async function createHousehold(name) {
@@ -76,6 +79,8 @@ const HouseholdContextProvider = (props) => {
           householdMembers: [{ id: dbUser?.id, points: 0 }],
           name: name,
           adminIds: [dbUser?.id],
+          availableChores: [],
+          doneChores: [],
         })
       );
       setCurrentHousehold(household);

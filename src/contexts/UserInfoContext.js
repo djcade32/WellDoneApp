@@ -76,7 +76,7 @@ const UserInfoContextProvider = (props) => {
           updated.activeHouseholdId = householdId;
         })
       );
-      console.log("Update user profile: ", user);
+      console.log("Adding household id: ", user);
       setDbUser(user);
     } catch (e) {
       console.log("Could not add householdId to user");

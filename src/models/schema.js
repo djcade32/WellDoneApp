@@ -68,12 +68,13 @@ export const schema = {
                 },
                 "doneChores": {
                     "name": "doneChores",
-                    "isArray": false,
+                    "isArray": true,
                     "type": {
                         "nonModel": "UserDoneChores"
                     },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -470,5 +471,5 @@ export const schema = {
             }
         }
     },
-    "version": "612410850f1e717253403f2001aa5730"
+    "version": "7de9424057dee806eab4967a9bafd407"
 };

@@ -20,6 +20,7 @@ const HouseholdCard = (props) => {
     const fetchedHousehold = await DataStore.query(Household, (household) =>
       household.id("eq", props.householdId)
     );
+    console.log("Test: ", test);
     setHousehold(fetchedHousehold[0]);
     if (currentHousehold.id === fetchedHousehold[0].id) {
       setActiveHousehold(true);
@@ -30,7 +31,7 @@ const HouseholdCard = (props) => {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => alert(household?.name + "'s household Clicked")}
+      onPress={() => alert(household?.name.trim() + "'s household Clicked")}
       style={
         activeHousehold
           ? [styles.householdCard, { backgroundColor: Colors.darkGreen }]
@@ -38,7 +39,7 @@ const HouseholdCard = (props) => {
       }
     >
       <Text style={styles.householdCardTitle}>
-        {household?.name}'s Household
+        {household?.name.trim()}'s Household
       </Text>
     </TouchableOpacity>
   );

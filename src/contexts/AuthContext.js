@@ -7,6 +7,7 @@ const AuthContext = createContext({});
 const AuthContextProvider = (props) => {
   const [authUser, setAuthUser] = useState(null);
   const [dbUser, setDbUser] = useState(null);
+  const [isFetchingUser, setIsFetchingUser] = useState(true);
   const sub = authUser?.attributes?.sub;
 
   useEffect(() => {
@@ -20,9 +21,11 @@ const AuthContextProvider = (props) => {
       DataStore.query(User, (user) => user.sub("eq", sub)).then((users) => {
         if (users.length >= 1) {
           console.log("User: ", users[0]);
+          setIsFetchingUser(false);
           setDbUser(users[0]);
         } else {
           console.log("User not found");
+          setIsFetchingUser(false);
         }
       });
     }
@@ -49,6 +52,7 @@ const AuthContextProvider = (props) => {
         sub,
         setDbUser,
         getCurrentUser,
+        isFetchingUser,
       }}
     >
       {props.children}
