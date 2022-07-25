@@ -3,7 +3,7 @@ import Colors from "../../../constants/Colors";
 export default StyleSheet.create({
   householdCard: {
     marginBottom: 25,
-    backgroundColor: Colors.darkGreen,
+
     height: 100,
     borderRadius: 10,
     justifyContent: "center",
