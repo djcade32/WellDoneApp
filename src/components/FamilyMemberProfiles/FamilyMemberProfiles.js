@@ -2,12 +2,17 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
-import { Storage, DataStore } from "aws-amplify";
+import { Storage } from "aws-amplify";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 const FamilyMemberProfiles = (props) => {
   // TODO: Holding profile pic will delete family member
   const navigation = useNavigation();
+  const { dbUser } = useAuthContext();
   const [image, setImage] = useState("");
+  const [screen, setScreen] = useState(
+    props?.userInfo?.id === dbUser?.id ? "ProfileScreen" : "FamilyMemberScreen"
+  );
   console.log("Data: ", props.userInfo);
   useEffect(() => {
     console.log(
@@ -16,11 +21,12 @@ const FamilyMemberProfiles = (props) => {
     Storage.get(props?.userInfo?.imageId, {
       level: "protected",
     }).then((url) => setImage(url));
+    console.log("Set Screen: ", screen);
   }, []);
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => navigation.navigate("FamilyMemberScreen")}
+      onPress={() => navigation.navigate(screen)}
       style={styles.imageContainer}
     >
       {image !== "" ? (

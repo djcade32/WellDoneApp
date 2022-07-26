@@ -20,7 +20,6 @@ const HouseholdCard = (props) => {
     const fetchedHousehold = await DataStore.query(Household, (household) =>
       household.id("eq", props.householdId)
     );
-    console.log("Test: ", test);
     setHousehold(fetchedHousehold[0]);
     if (currentHousehold.id === fetchedHousehold[0].id) {
       setActiveHousehold(true);

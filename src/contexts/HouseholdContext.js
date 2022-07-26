@@ -37,6 +37,7 @@ const HouseholdContextProvider = (props) => {
     }
   }, [dbUser?.activeHouseholdId]);
 
+  // TODO: Just pull household from context and go from there. Do not worry about separating each element into its onwn state
   useEffect(() => {
     if (currentHousehold) {
       console.log("Populating Household Members");
@@ -72,6 +73,7 @@ const HouseholdContextProvider = (props) => {
   }, [currentHousehold?.availableChores]);
 
   async function createHousehold(name) {
+    setCurrentHouseholdMembers([]);
     try {
       const household = await DataStore.save(
         new Household({

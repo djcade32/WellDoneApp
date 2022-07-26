@@ -87,7 +87,7 @@ const HomeScreen = () => {
   function handleCreateHouseholdPress() {
     if (createHouseholdButtonPress) {
       // create household and turn back false
-      if (householdName !== "") {
+      if (householdName.trim().length !== 0) {
         setCreateHouseholdButtonPress(false);
         createHousehold(householdName);
       } else {
