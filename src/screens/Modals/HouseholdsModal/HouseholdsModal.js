@@ -14,8 +14,13 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import CreateHouseholdButton from "../../../components/ModalComponents/HouseholdCard/CreateHouseholdButton/CreateHouseholdButton";
 import Colors from "../../../constants/Colors";
 import { useHouseholdContext } from "../../../contexts/HouseholdContext";
+import {
+  NavigationHelpersContext,
+  useNavigation,
+} from "@react-navigation/native";
 
 const HouseholdsModal = () => {
+  const navigation = useNavigation();
   const { dbUser } = useAuthContext();
   const { createHousehold } = useHouseholdContext();
   const [modalVisible, setModalVisible] = useState(false);
@@ -30,6 +35,7 @@ const HouseholdsModal = () => {
     }
     try {
       createHousehold(newHouseholdName);
+      navigation.goBack();
       setShowSuccessModal(true);
       setModalVisible(false);
     } catch (err) {
@@ -101,7 +107,10 @@ const HouseholdsModal = () => {
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => setModalVisible(false)}
+                onPress={() => {
+                  setModalVisible(false);
+                  setHouseholdNameError(false);
+                }}
                 style={{
                   backgroundColor: Colors.darkGray,
                   padding: 10,

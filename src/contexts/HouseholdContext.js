@@ -15,7 +15,7 @@ const HouseholdContextProvider = (props) => {
   const [currentAvailableChores, setCurrentAvailableChores] = useState([]);
 
   useMemo(() => {
-    if (dbUser?.activeHouseholdId != "" && dbUser !== null) {
+    if (dbUser?.activeHouseholdId !== "" && dbUser !== null) {
       console.log("Finding active household in DB");
       DataStore.query(Household, (household) =>
         household.id("eq", dbUser?.activeHouseholdId)
@@ -37,40 +37,68 @@ const HouseholdContextProvider = (props) => {
     }
   }, [dbUser?.activeHouseholdId]);
 
-  // TODO: Just pull household from context and go from there. Do not worry about separating each element into its onwn state
-  useEffect(() => {
-    if (currentHousehold) {
-      console.log("Populating Household Members");
-      currentHousehold.householdMembers.forEach((member) => {
-        console.log(currentHousehold.householdMembers.length);
-        DataStore.query(User, (user) => user.id("eq", member.id)).then(
-          (users) => {
-            if (users.length >= 1) {
-              console.log("Adding household member");
-              setCurrentHouseholdMembers((prevState) => [
-                ...prevState,
-                users[0],
-              ]);
-            } else {
-              console.log("No members found");
-            }
-          }
-        );
-      });
-    }
-  }, [currentHousehold]);
-
-  useMemo(() => {
-    if (dbUser !== null && currentHousehold !== null) {
-      if (currentHousehold && currentHousehold.availableChores.length > 0) {
-        setCurrentAvailableChores(currentHousehold.availableChores);
-      }
-      console.log(
-        "Getting available chores: ",
-        currentHousehold?.availableChores
+  async function switchActiveHousehold(householdId) {
+    const originalUserInfo = await getCurrentUser();
+    try {
+      const user = await DataStore.save(
+        User.copyOf(originalUserInfo, (updated) => {
+          updated.activeHouseholdId = householdId;
+        })
       );
+      console.log("Changing Active household id: ", user);
+      setDbUser(user);
+    } catch (e) {
+      console.log("Could not change Active household id: ", e);
     }
-  }, [currentHousehold?.availableChores]);
+  }
+
+  // TODO: Just pull household from context and go from there. Do not worry about separating each element into its onwn state
+  // useEffect(() => {
+  //   if (currentHousehold) {
+  //     console.log("Populating Household Members");
+  //     currentHousehold.householdMembers.forEach((member) => {
+  //       console.log(currentHousehold.householdMembers.length);
+  //       DataStore.query(User, (user) => user.id("eq", member.id)).then(
+  //         (users) => {
+  //           if (users.length >= 1) {
+  //             console.log("Adding household member");
+  //             setCurrentHouseholdMembers((prevState) => [
+  //               ...prevState,
+  //               users[0],
+  //             ]);
+  //           } else {
+  //             console.log("No members found");
+  //           }
+  //         }
+  //       );
+  //     });
+  //   }
+  // }, [currentHousehold]);
+
+  // useMemo(() => {
+  //   if (dbUser !== null && currentHousehold !== null) {
+  //     if (currentHousehold && currentHousehold.availableChores.length > 0) {
+  //       setCurrentAvailableChores(currentHousehold.availableChores);
+  //     }
+  //     console.log(
+  //       "Getting available chores: ",
+  //       currentHousehold?.availableChores
+  //     );
+  //   }
+  // }, [currentHousehold?.availableChores]);
+
+  async function getUser(id) {
+    const user = await DataStore.query(User, (user) => user.id("eq", id)).then(
+      (users) => {
+        if (users.length >= 1) {
+          return users[0];
+        } else {
+          console.log("User not found");
+        }
+      }
+    );
+    return user;
+  }
 
   async function createHousehold(name) {
     setCurrentHouseholdMembers([]);
@@ -97,11 +125,13 @@ const HouseholdContextProvider = (props) => {
   return (
     <HouseholdContext.Provider
       value={{
+        switchActiveHousehold,
         createHousehold,
         currentHousehold,
         currentUserPoints,
         currentHouseholdMembers,
         currentAvailableChores,
+        getUser,
       }}
     >
       {props.children}

@@ -5,11 +5,14 @@ import { Household } from "../../../models";
 import { DataStore } from "aws-amplify";
 import { useHouseholdContext } from "../../../contexts/HouseholdContext";
 import Colors from "../../../constants/Colors";
+import { useAuthContext } from "../../../contexts/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 
 const HouseholdCard = (props) => {
+  const navigation = useNavigation();
   const [household, setHousehold] = useState(null);
   const [activeHousehold, setActiveHousehold] = useState(false);
-  const { currentHousehold } = useHouseholdContext();
+  const { currentHousehold, switchActiveHousehold } = useHouseholdContext();
 
   useEffect(() => {
     console.log("Fetching household");
@@ -27,10 +30,21 @@ const HouseholdCard = (props) => {
     console.log("Found household: ", fetchedHousehold);
   }
 
+  function handleHouseholdPress() {
+    console.log(household.name + " " + household.id);
+    console.log(currentHousehold.name + " " + currentHousehold.id);
+    if (household.id !== currentHousehold.id) {
+      console.log("Switching households");
+      switchActiveHousehold(household.id);
+      // TODO: Reuse modal component to show successful household switch
+      navigation.goBack();
+    }
+  }
+
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => alert(household?.name.trim() + "'s household Clicked")}
+      onPress={handleHouseholdPress}
       style={
         activeHousehold
           ? [styles.householdCard, { backgroundColor: Colors.darkGreen }]

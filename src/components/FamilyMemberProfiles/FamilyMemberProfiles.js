@@ -4,25 +4,36 @@ import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { Storage } from "aws-amplify";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { useHouseholdContext } from "../../contexts/HouseholdContext";
 
 const FamilyMemberProfiles = (props) => {
   // TODO: Holding profile pic will delete family member
   const navigation = useNavigation();
   const { dbUser } = useAuthContext();
+  const { getUser } = useHouseholdContext();
   const [image, setImage] = useState("");
-  const [screen, setScreen] = useState(
-    props?.userInfo?.id === dbUser?.id ? "ProfileScreen" : "FamilyMemberScreen"
-  );
-  console.log("Data: ", props.userInfo);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const screen =
+    props?.userInfo?.id === dbUser?.id ? "ProfileScreen" : "FamilyMemberScreen";
+
   useEffect(() => {
     console.log(
       "Setting Profile Pic of Family member profile pics on home screen"
     );
-    Storage.get(props?.userInfo?.imageId, {
-      level: "protected",
-    }).then((url) => setImage(url));
+    getHouseholdMember();
+
     console.log("Set Screen: ", screen);
   }, []);
+
+  async function getHouseholdMember() {
+    const user = await getUser(props.userInfo.id);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    Storage.get(user.imageId, {
+      level: "protected",
+    }).then((url) => setImage(url));
+  }
   return (
     <TouchableOpacity
       activeOpacity={0.5}
@@ -40,7 +51,7 @@ const FamilyMemberProfiles = (props) => {
       ) : (
         <View style={styles.familyMemberProfile}>
           <Text style={styles.familyMemberProfileInitials}>
-            {props.userInfo.firstName[0] + props.userInfo.lastName[0]}
+            {firstName[0] + lastName[0]}
           </Text>
         </View>
       )}

@@ -70,12 +70,12 @@ const HomeScreen = () => {
     setHouseholdIds(dbUser?.householdIds);
   }, [dbUser]);
 
-  useMemo(() => {
-    if (currentHouseholdMembers !== null) {
-      console.log("Setting household members on home screen");
-      setHouseholdMembers(currentHouseholdMembers);
-    }
-  }, [currentHouseholdMembers]);
+  // useMemo(() => {
+  //   if (currentHouseholdMembers !== null) {
+  //     console.log("Setting household members on home screen");
+  //     setHouseholdMembers(currentHouseholdMembers);
+  //   }
+  // }, [currentHouseholdMembers]);
 
   useEffect(() => {
     console.log("Setting User Profile Pic on home screen");
@@ -185,7 +185,7 @@ const HomeScreen = () => {
                   flexWrap: "wrap",
                 }}
               >
-                {householdMembers.map((user) => (
+                {currentHousehold?.householdMembers.map((user) => (
                   <FamilyMemberProfiles key={user.id} userInfo={user} />
                 ))}
                 <TouchableOpacity
@@ -212,9 +212,11 @@ const HomeScreen = () => {
               </Text>
               <FlatList
                 contentOffset={[-50, 0]}
-                scrollEnabled={currentAvailableChores.length === 0 && false}
+                scrollEnabled={
+                  currentHousehold?.availableChores.length === 0 && false
+                }
                 contentContainerStyle={
-                  currentAvailableChores.length === 0
+                  currentHousehold?.availableChores.length === 0
                     ? {
                         paddingLeft: 50,
                         alignItems: "center",
@@ -224,7 +226,7 @@ const HomeScreen = () => {
                 showsHorizontalScrollIndicator={false}
                 style={{ marginTop: 20, height: 200 }}
                 horizontal={true}
-                data={currentAvailableChores}
+                data={currentHousehold?.availableChores}
                 renderItem={({ item }) => <ChoreCard choreInfo={item} />}
                 ListEmptyComponent={EmptyChoresList}
               />
