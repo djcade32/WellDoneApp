@@ -45,7 +45,7 @@ const ProfileSettingsModal = () => {
 
   useEffect(() => {
     Storage.get(dbUser?.imageId, {
-      level: "protected",
+      level: "public",
     }).then((url) => setImage(url));
   }, []);
 
@@ -258,8 +258,8 @@ const ProfileSettingsModal = () => {
           </TouchableOpacity>
 
           <Pressable
-            onPress={() => {
-              Auth.signOut();
+            onPress={async () => {
+              await Auth.signOut();
               console.log("User Signed Out: ", dbUser.id);
             }}
           >

@@ -25,5 +25,6 @@ export default StyleSheet.create({
     fontFamily: "poppins-medium",
     fontSize: 16,
     letterSpacing: 1,
+    color: Colors.textColor,
   },
 });

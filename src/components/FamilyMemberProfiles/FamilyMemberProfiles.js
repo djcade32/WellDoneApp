@@ -31,7 +31,7 @@ const FamilyMemberProfiles = (props) => {
     setFirstName(user.firstName);
     setLastName(user.lastName);
     Storage.get(user.imageId, {
-      level: "protected",
+      level: "public",
     }).then((url) => setImage(url));
   }
   return (

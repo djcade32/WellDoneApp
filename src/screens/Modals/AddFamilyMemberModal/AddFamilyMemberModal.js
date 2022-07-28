@@ -1,13 +1,23 @@
 import { View, Text, FlatList } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles";
 import SearchBar from "../../../components/SearchBar/SearchBar";
 import userData from "../../../../assets/data/userData";
 import UserSearchCard from "../../../components/ModalComponents/UserSearchCard/UserSearchCard";
+import { useUserInfoContext } from "../../../contexts/UserInfoContext";
 
 const USER = userData.User;
 
 const AddFamilyMemberModal = () => {
+  const { getAllUsers } = useUserInfoContext();
+  const [allUsers, setAllUsers] = useState([]);
+  useEffect(() => {
+    getUsers();
+  }, []);
+  async function getUsers() {
+    const users = await getAllUsers();
+    setAllUsers(users);
+  }
   return (
     <View style={styles.modalContainer}>
       {/* <Text style={styles.modalTitle}>Add Family Member</Text>
@@ -19,8 +29,8 @@ const AddFamilyMemberModal = () => {
         <FlatList
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.householdsContainer}
-          data={[...Array(10)]}
-          renderItem={() => <UserSearchCard />}
+          data={allUsers}
+          renderItem={({ item }) => <UserSearchCard userInfo={item} />}
         />
       </View>
     </View>

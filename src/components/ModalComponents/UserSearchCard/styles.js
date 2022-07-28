@@ -28,4 +28,18 @@ export default StyleSheet.create({
     alignSelf: "center",
     // textAlign: "center",
   },
+  userProfile: {
+    borderRadius: 50 / 2,
+    backgroundColor: Colors.lightGray,
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+  },
+  userProfileInitials: {
+    textAlign: "center",
+    fontFamily: "poppins-medium",
+    fontSize: 16,
+    letterSpacing: 1,
+    color: Colors.textColor,
+  },
 });

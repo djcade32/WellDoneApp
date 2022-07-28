@@ -63,7 +63,7 @@ const HomeScreen = () => {
     console.log("Setting User Info on home screen");
     console.log("User on Home screen: ", dbUser);
     Storage.get(dbUser?.imageId, {
-      level: "protected",
+      level: "public",
     }).then((url) => setImage(url ?? null));
     setFirstName(dbUser?.firstName);
     setLastName(dbUser?.lastName);
@@ -80,7 +80,7 @@ const HomeScreen = () => {
   useEffect(() => {
     console.log("Setting User Profile Pic on home screen");
     Storage.get(dbUser?.imageId, {
-      level: "protected",
+      level: "public",
     }).then((url) => setImage(url));
   }, []);
 

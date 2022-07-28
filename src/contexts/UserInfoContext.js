@@ -46,7 +46,7 @@ const UserInfoContextProvider = (props) => {
       const response = await fetch(imagePath);
       const blob = await response.blob();
       await Storage.put(imageId, blob, {
-        level: "protected",
+        level: "public",
         contentType: "image/jpeg", // contentType is optional
         progressCallback: () => {
           console.log("Attempting to upload image");
@@ -60,7 +60,7 @@ const UserInfoContextProvider = (props) => {
   async function deleteProfilePic(imageId) {
     console.log("Deleting old profile pic");
     try {
-      await Storage.remove(imageId, { level: "protected" });
+      await Storage.remove(imageId, { level: "public" });
     } catch {
       console.log("Removing old profile pic unsuccessful");
       console.log(e);
@@ -82,6 +82,11 @@ const UserInfoContextProvider = (props) => {
       console.log("Could not add householdId to user");
       console.log(e);
     }
+  }
+
+  async function getAllUsers() {
+    const users = await DataStore.query(User);
+    return users;
   }
 
   //   async function createUser({ firstName, lastName, gender, image, imageId }) {
@@ -111,6 +116,7 @@ const UserInfoContextProvider = (props) => {
         deleteProfilePic,
         updateUser,
         addHouseholdToUser,
+        getAllUsers,
       }}
     >
       {props.children}

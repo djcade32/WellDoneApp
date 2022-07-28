@@ -73,7 +73,7 @@ const ProfileScreen = () => {
   useEffect(() => {
     console.log("Setting User Profile Pic on Profile screen");
     Storage.get(dbUser?.imageId, {
-      level: "protected",
+      level: "public",
     }).then((url) => setImage(url));
   }, []);
 
