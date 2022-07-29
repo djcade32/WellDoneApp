@@ -14,10 +14,8 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import CreateHouseholdButton from "../../../components/ModalComponents/HouseholdCard/CreateHouseholdButton/CreateHouseholdButton";
 import Colors from "../../../constants/Colors";
 import { useHouseholdContext } from "../../../contexts/HouseholdContext";
-import {
-  NavigationHelpersContext,
-  useNavigation,
-} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
 const HouseholdsModal = () => {
   const navigation = useNavigation();
@@ -154,7 +152,18 @@ const HouseholdsModal = () => {
           </View>
         </View>
       </Modal>
-
+      <View
+        style={{
+          position: "absolute",
+          top: 25,
+          left: 25,
+          alignItems: "center",
+          // flexDirection: "row",
+        }}
+      >
+        <FontAwesome name="send" size={24} color="white" />
+        <Text style={styles.householdModalSubTitle}>Invites</Text>
+      </View>
       <Text style={styles.householdModalTitle}>Households</Text>
       <Text style={styles.householdModalSubTitle}>Tap to switch household</Text>
       <View style={styles.contentContainer}>
