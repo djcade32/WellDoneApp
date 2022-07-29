@@ -30,7 +30,6 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { useHouseholdContext } from "../../contexts/HouseholdContext";
 import { Storage, DataStore } from "aws-amplify";
 import EmptyChoresList from "../../components/EmptyChoresList/EmptyChoresList";
-import { set } from "react-native-reanimated";
 
 const USER = userData.User[0];
 const HOUSEHOLD = userData.HouseHold[0];
@@ -38,7 +37,7 @@ const HOUSEHOLD = userData.HouseHold[0];
 const HomeScreen = () => {
   const choresFlatList = useRef(null);
   const navigation = useNavigation();
-  const { currentUser, getCurrentUserProfilPic } = useUserInfoContext();
+  const { getAllUsers } = useUserInfoContext();
   const {
     createHousehold,
     currentHousehold,
@@ -58,6 +57,7 @@ const HomeScreen = () => {
   const [householdMembers, setHouseholdMembers] = useState(
     currentHouseholdMembers
   );
+  const [allUsers, setAllUsers] = useState([]);
 
   useMemo(() => {
     console.log("Setting User Info on home screen");
@@ -69,13 +69,6 @@ const HomeScreen = () => {
     setLastName(dbUser?.lastName);
     setHouseholdIds(dbUser?.householdIds);
   }, [dbUser]);
-
-  // useMemo(() => {
-  //   if (currentHouseholdMembers !== null) {
-  //     console.log("Setting household members on home screen");
-  //     setHouseholdMembers(currentHouseholdMembers);
-  //   }
-  // }, [currentHouseholdMembers]);
 
   useEffect(() => {
     console.log("Setting User Profile Pic on home screen");
@@ -97,6 +90,15 @@ const HomeScreen = () => {
       return;
     }
     setCreateHouseholdButtonPress(true);
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  async function getUsers() {
+    const users = await getAllUsers();
+    setAllUsers(users);
   }
 
   return (
@@ -190,7 +192,9 @@ const HomeScreen = () => {
                 ))}
                 <TouchableOpacity
                   activeOpacity={0.5}
-                  onPress={() => navigation.navigate("AddFamilyMemberModal")}
+                  onPress={() =>
+                    navigation.navigate("AddFamilyMemberModal", allUsers)
+                  }
                   style={{ marginRight: 15, paddingTop: 15 }}
                 >
                   <View style={styles.addFamilyMemberCircle}>

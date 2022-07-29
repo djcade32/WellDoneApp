@@ -2,34 +2,39 @@ import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import styles from "./styles";
 import SearchBar from "../../../components/SearchBar/SearchBar";
-import userData from "../../../../assets/data/userData";
 import UserSearchCard from "../../../components/ModalComponents/UserSearchCard/UserSearchCard";
-import { useUserInfoContext } from "../../../contexts/UserInfoContext";
-
-const USER = userData.User;
+import { useRoute } from "@react-navigation/native";
 
 const AddFamilyMemberModal = () => {
-  const { getAllUsers } = useUserInfoContext();
-  const [allUsers, setAllUsers] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchedUsers, setSearchedUsers] = useState([]);
+  const route = useRoute();
+  const allUsers = route.params;
+
   useEffect(() => {
-    getUsers();
-  }, []);
-  async function getUsers() {
-    const users = await getAllUsers();
-    setAllUsers(users);
-  }
+    console.log("Search Value: ", searchValue);
+    setSearchedUsers(
+      allUsers.filter((user) => {
+        const name = user.firstName + " " + user.lastName;
+        if (name.includes(searchValue)) {
+          return user;
+        }
+      })
+    );
+  }, [searchValue]);
+
   return (
     <View style={styles.modalContainer}>
-      {/* <Text style={styles.modalTitle}>Add Family Member</Text>
-      <Text style={styles.modalSubTitle}>Tap household to switch to</Text> */}
-
-      <SearchBar placeholder={"Search for family member to add"} />
+      <SearchBar
+        placeholder={"Search for family member to add"}
+        setSearchValue={setSearchValue}
+      />
 
       <View style={styles.contentContainer}>
         <FlatList
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.householdsContainer}
-          data={allUsers}
+          data={searchedUsers}
           renderItem={({ item }) => <UserSearchCard userInfo={item} />}
         />
       </View>

@@ -1,5 +1,5 @@
 import { View, TextInput } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -18,12 +18,13 @@ const SearchBar = (props) => {
         placeholderTextColor="white"
         selectionColor={"white"}
         spellCheck={false}
-        // onChangeText={(value) => {
-        //   if (props.setIsSearching) {
-        //     props.setIsSearching(true);
-        //   }
-        //   props.setSearchValue(value);
-        // }}
+        onChangeText={(value) => {
+          props.setSearchValue(value);
+          // if (props.setIsSearching) {
+          //   props.setIsSearching(true);
+          // }
+          // props.setSearchValue(value);
+        }}
       />
     </View>
   );
