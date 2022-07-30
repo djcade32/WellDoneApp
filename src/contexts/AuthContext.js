@@ -44,6 +44,19 @@ const AuthContextProvider = (props) => {
     return currentUser;
   }
 
+  function getUserById(id) {
+    const foundUser = DataStore.query(User, (user) => user.sub("eq", id)).then(
+      (users) => {
+        if (users.length >= 1) {
+          return users[0];
+        } else {
+          console.log("User not found");
+        }
+      }
+    );
+    return foundUser;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -53,6 +66,7 @@ const AuthContextProvider = (props) => {
         setDbUser,
         getCurrentUser,
         isFetchingUser,
+        getUserById,
       }}
     >
       {props.children}

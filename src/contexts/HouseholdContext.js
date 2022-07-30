@@ -3,11 +3,12 @@ import { Storage, DataStore } from "aws-amplify";
 import { useAuthContext } from "./AuthContext";
 import { useUserInfoContext } from "./UserInfoContext";
 import { Household, User } from "../models";
+import uuid from "react-native-uuid";
 
 const HouseholdContext = createContext({});
 
 const HouseholdContextProvider = (props) => {
-  const { dbUser, setDbUser, getCurrentUser } = useAuthContext();
+  const { dbUser, setDbUser, getCurrentUser, getUserById } = useAuthContext();
   const { addHouseholdToUser } = useUserInfoContext();
   const [currentHousehold, setCurrentHousehold] = useState(null);
   const [currentUserPoints, setCurrentUserPoints] = useState(0);
@@ -100,6 +101,31 @@ const HouseholdContextProvider = (props) => {
     return user;
   }
 
+  async function inviteUserToHousehold(userInfo) {
+    console.log("Inviting User");
+    // const originalUserInfo = await getUserById(id);
+    try {
+      const user = await DataStore.save(
+        User.copyOf(userInfo, (updated) => {
+          updated.householdInvites = [
+            ...updated.householdInvites,
+            {
+              id: uuid.v4(),
+              senderId: dbUser?.id,
+              receiverId: userInfo.id,
+              householdId: currentHousehold.id,
+              status: "PENDING",
+            },
+          ];
+        })
+      );
+      console.log("Inviting user: ", user);
+    } catch (e) {
+      console.log("Could not invite user");
+      console.log(e);
+    }
+  }
+
   async function createHousehold(name) {
     setCurrentHouseholdMembers([]);
     try {
@@ -132,6 +158,7 @@ const HouseholdContextProvider = (props) => {
         currentHouseholdMembers,
         currentAvailableChores,
         getUser,
+        inviteUserToHousehold,
       }}
     >
       {props.children}

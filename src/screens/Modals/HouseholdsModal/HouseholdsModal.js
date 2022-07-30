@@ -16,6 +16,7 @@ import Colors from "../../../constants/Colors";
 import { useHouseholdContext } from "../../../contexts/HouseholdContext";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
+import HouseholdInviteCard from "../../../components/ModalComponents/HouseholdInviteCard/HouseholdInviteCard";
 
 const HouseholdsModal = () => {
   const navigation = useNavigation();
@@ -25,6 +26,7 @@ const HouseholdsModal = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [newHouseholdName, setNewHouseholdName] = useState("");
   const [householdNameError, setHouseholdNameError] = useState(false);
+  const [showInvites, setShowInvites] = useState(false);
 
   function handleCreateNewHousehold() {
     if (newHouseholdName.trim().length === 0) {
@@ -152,29 +154,42 @@ const HouseholdsModal = () => {
           </View>
         </View>
       </Modal>
-      <View
+      <TouchableOpacity
         style={{
           position: "absolute",
-          top: 25,
+          top: 15,
           left: 25,
-          alignItems: "center",
-          // flexDirection: "row",
         }}
+        onPress={() => setShowInvites(!showInvites)}
       >
-        <FontAwesome name="send" size={24} color="white" />
-        <Text style={styles.householdModalSubTitle}>Invites</Text>
-      </View>
-      <Text style={styles.householdModalTitle}>Households</Text>
+        {/* <FontAwesome name="send" size={15} color="white" /> */}
+        <Text style={styles.householdModalSubTitle}>
+          {showInvites
+            ? "Households"
+            : "Invites(" + dbUser?.householdInvites.length + ")"}
+        </Text>
+      </TouchableOpacity>
+      <Text style={styles.householdModalTitle}>
+        {showInvites ? "Invites" : "Households"}
+      </Text>
       <Text style={styles.householdModalSubTitle}>Tap to switch household</Text>
       <View style={styles.contentContainer}>
         <FlatList
           ListHeaderComponent={
-            <CreateHouseholdButton setModalVisible={setModalVisible} />
+            !showInvites && (
+              <CreateHouseholdButton setModalVisible={setModalVisible} />
+            )
           }
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.householdsContainer}
-          data={dbUser?.householdIds}
-          renderItem={({ item }) => <HouseholdCard householdId={item} />}
+          data={showInvites ? dbUser?.householdInvites : dbUser?.householdIds}
+          renderItem={({ item }) =>
+            showInvites ? (
+              <HouseholdInviteCard householdId={item} />
+            ) : (
+              <HouseholdCard householdId={item} />
+            )
+          }
         />
       </View>
     </View>
