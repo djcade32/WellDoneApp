@@ -22,10 +22,9 @@ export declare class Chores {
 
 export declare class HouseholdInvite {
   readonly id: string;
-  readonly senderId: string;
-  readonly receiverId: string;
   readonly householdId: string;
-  readonly status?: InviteStatus | keyof typeof InviteStatus | null;
+  readonly status: InviteStatus | keyof typeof InviteStatus;
+  readonly name: string;
   constructor(init: ModelInit<HouseholdInvite>);
 }
 
@@ -58,6 +57,7 @@ export declare class Household {
   readonly adminIds?: string[] | null;
   readonly Users?: (HouseholdUser | null)[] | null;
   readonly doneChores?: (UserDoneChores | null)[] | null;
+  readonly sentInvites?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Household, HouseholdMetaData>);

@@ -103,7 +103,6 @@ const HouseholdContextProvider = (props) => {
 
   async function inviteUserToHousehold(userInfo) {
     console.log("Inviting User");
-    // const originalUserInfo = await getUserById(id);
     try {
       const user = await DataStore.save(
         User.copyOf(userInfo, (updated) => {
@@ -111,15 +110,21 @@ const HouseholdContextProvider = (props) => {
             ...updated.householdInvites,
             {
               id: uuid.v4(),
-              senderId: dbUser?.id,
-              receiverId: userInfo.id,
               householdId: currentHousehold.id,
               status: "PENDING",
+              name: currentHousehold.name,
             },
           ];
         })
       );
+
+      const household = await DataStore.save(
+        Household.copyOf(currentHousehold, (updated) => {
+          updated.sentInvites = [...updated.sentInvites, userInfo.id];
+        })
+      );
       console.log("Inviting user: ", user);
+      console.log("Invitation sent by household: ", household);
     } catch (e) {
       console.log("Could not invite user");
       console.log(e);
@@ -133,17 +138,60 @@ const HouseholdContextProvider = (props) => {
         new Household({
           creatorId: dbUser?.id,
           householdMembers: [{ id: dbUser?.id, points: 0 }],
-          name: name,
           adminIds: [dbUser?.id],
           availableChores: [],
           doneChores: [],
+          sentInvites: [],
+          name: name,
+          households: [],
         })
       );
       setCurrentHousehold(household);
-      addHouseholdToUser(household.id);
+      addHouseholdToUser(household);
       console.log("Household created: ", household);
     } catch (e) {
       console.log("Error creating household:");
+      console.log(e);
+    }
+  }
+
+  async function acceptHouseholdInvitation(householdId) {
+    console.log("Accepting household invitation");
+    const originalUserInfo = await getCurrentUser();
+    newHouseholdInviteArray = originalUserInfo.householdInvites.filter(
+      (invite) => invite.id !== householdId
+    );
+    try {
+      const user = await DataStore.save(
+        User.copyOf(originalUserInfo, (updated) => {
+          updated.householdInvites = newHouseholdInviteArray;
+          updated.householdIds = [...updated.householdIds, householdId];
+        })
+      );
+      setDbUser(user);
+    } catch (e) {
+      console.log("Could not delete household invitation");
+      console.log(e);
+    }
+  }
+
+  async function addUserToHousehold() {
+    console.log("Adding user to household");
+    try {
+      const household = await DataStore.save(
+        Household.copyOf(currentHousehold, (updated) => {
+          updated.householdMembers = [
+            ...updated.householdMembers,
+            {
+              id: dbUser.id,
+              points: 0,
+            },
+          ];
+        })
+      );
+      console.log("Adding user to household: ", household);
+    } catch (e) {
+      console.log("Could not add user to household");
       console.log(e);
     }
   }
@@ -159,6 +207,8 @@ const HouseholdContextProvider = (props) => {
         currentAvailableChores,
         getUser,
         inviteUserToHousehold,
+        acceptHouseholdInvitation,
+        addUserToHousehold,
       }}
     >
       {props.children}

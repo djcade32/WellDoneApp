@@ -76,6 +76,14 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
+                "sentInvites": {
+                    "name": "sentInvites",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -405,20 +413,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "senderId": {
-                    "name": "senderId",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "receiverId": {
-                    "name": "receiverId",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "householdId": {
                     "name": "householdId",
                     "isArray": false,
@@ -432,7 +426,14 @@ export const schema = {
                     "type": {
                         "enum": "InviteStatus"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
                     "attributes": []
                 }
             }
@@ -471,5 +472,5 @@ export const schema = {
             }
         }
     },
-    "version": "7de9424057dee806eab4967a9bafd407"
+    "version": "e5b7bf5b924ced7cda7009707019d9f8"
 };

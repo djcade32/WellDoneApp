@@ -1,33 +1,19 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./styles";
-import { Household } from "../../../models";
-import { DataStore } from "aws-amplify";
 import { useHouseholdContext } from "../../../contexts/HouseholdContext";
 import Colors from "../../../constants/Colors";
-import { useAuthContext } from "../../../contexts/AuthContext";
+import { useUserInfoContext } from "../../../contexts/UserInfoContext";
 
 const HouseholdCard = (props) => {
-  const [household, setHousehold] = useState(null);
-  const [activeHousehold, setActiveHousehold] = useState(false);
-  const { currentHousehold, switchActiveHousehold } = useHouseholdContext();
+  const { deleteHouseholdInvitation, addUserToHousehold } =
+    useHouseholdContext();
+  const { addHouseholdToUser } = useUserInfoContext();
 
-  useEffect(() => {
-    console.log("household: ", props.householdId);
-    // TODO: Need to add name to household invite model in DB
-    console.log("Fetching household");
-    fetchHousehold();
-  }, []);
-
-  async function fetchHousehold() {
-    const fetchedHousehold = await DataStore.query(Household, (household) =>
-      household.id("eq", props.householdId)
-    );
-    setHousehold(fetchedHousehold[0]);
-    if (currentHousehold.id === fetchedHousehold[0].id) {
-      setActiveHousehold(true);
-    }
-    console.log("Found household: ", fetchedHousehold);
+  function handleAcceptPressed() {
+    addHouseholdToUser(props.householdInvite.householdId);
+    addUserToHousehold();
+    deleteHouseholdInvitation(props.householdInvite.householdId);
   }
 
   return (
@@ -38,15 +24,15 @@ const HouseholdCard = (props) => {
         { backgroundColor: Colors.darkGreen, flexDirection: "row" },
       ]}
     >
-      <Text style={styles.householdCardTitle}>
-        {household?.name.trim()}'s Household Invite
+      <Text style={[styles.householdCardTitle, { maxWidth: "50%" }]}>
+        {props.householdInvite?.name.trim()}'s Household Invite
       </Text>
       <View
         style={{
           justifyContent: "space-around",
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleAcceptPressed}>
           <Text style={styles.householdCardTitle}>Accept</Text>
         </TouchableOpacity>
         <TouchableOpacity>

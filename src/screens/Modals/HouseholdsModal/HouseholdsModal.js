@@ -185,7 +185,7 @@ const HouseholdsModal = () => {
           data={showInvites ? dbUser?.householdInvites : dbUser?.householdIds}
           renderItem={({ item }) =>
             showInvites ? (
-              <HouseholdInviteCard householdId={item} />
+              <HouseholdInviteCard householdInvite={item} />
             ) : (
               <HouseholdCard householdId={item} />
             )

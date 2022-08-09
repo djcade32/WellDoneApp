@@ -67,13 +67,20 @@ const UserInfoContextProvider = (props) => {
     }
   }
 
-  async function addHouseholdToUser(householdId) {
+  async function addHouseholdToUser(household) {
     const originalUserInfo = await getCurrentUser();
     try {
       const user = await DataStore.save(
         User.copyOf(originalUserInfo, (updated) => {
-          updated.householdIds = [...updated.householdIds, householdId];
-          updated.activeHouseholdId = householdId;
+          updated.householdIds = [...updated.householdIds, household.id];
+          updated.activeHouseholdId = household.id;
+          updated.households = [
+            {
+              id: household.id,
+              user: originalUserInfo,
+              household: household,
+            },
+          ];
         })
       );
       console.log("Adding household id: ", user);
@@ -88,25 +95,6 @@ const UserInfoContextProvider = (props) => {
     const users = await DataStore.query(User);
     return users;
   }
-
-  //   async function createUser({ firstName, lastName, gender, image, imageId }) {
-  //     try {
-  //       const user = await DataStore.save(
-  //         new User({
-  //           firstName,
-  //           lastName,
-  //           gender,
-  //           sub,
-  //           imageId,
-  //         })
-  //       )
-  //         .then(setDbUser)
-  //         .then(uploadProfilePic(imageId, image));
-  //     } catch (e) {
-  //       console.log("Error creating user:");
-  //       console.log(e);
-  //     }
-  //   }
 
   return (
     <UserInfoContext.Provider

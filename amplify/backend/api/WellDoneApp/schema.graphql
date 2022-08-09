@@ -19,6 +19,7 @@ type Household @model @auth(rules: [{allow: public}]) {
   adminIds: [String!]
   Users: [User] @manyToMany(relationName: "HouseholdUser")
   doneChores: [UserDoneChores]
+  sentInvites: [String]
 }
 
 type UserDoneChores {
@@ -36,10 +37,9 @@ enum InviteStatus {
 
 type HouseholdInvite {
   id: ID!
-  senderId: String!
-  receiverId: String!
   householdId: String!
-  status: InviteStatus
+  status: InviteStatus!
+  name: String!
 }
 
 type User @model @auth(rules: [{allow: public}]) {
